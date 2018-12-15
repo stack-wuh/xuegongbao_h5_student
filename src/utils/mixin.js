@@ -1,0 +1,59 @@
+/**
+ * [reloadTitleMixin 切换当前页的documentTitle]
+ * @type {Object}
+ */
+export const reloadTitleMixin = {
+  data(){
+    return {
+      docTitle: '学工宝学生端公众号',
+      defaultImg: require('@/assets/imgs/logo.png')
+    }
+  },
+  computed:{
+    documentTitle(){
+      return this.$route.query.name
+    },
+    query(){
+      return this.$route.query
+    }
+  },
+  methods:{
+    reLoadTitle(){
+      document.title = this.docTitle || this.documentTitle
+    }
+  },
+  created(){
+    setTimeout(() => {
+      this.reLoadTitle()
+    }, 300)
+  }
+}
+
+/**
+ * [pushRouter 路由对象的push事件]
+ * @type {Object}
+ */
+export const pushRouter = {
+  methods: {
+    $push(search){
+      this.$router.push(search)
+    }
+  }
+}
+/**
+ * [changeTabCurr 顶部导航的切换事件]
+ * @type {Object}
+ */
+export const changeTabCurr = {
+  data(){
+    return {
+      currTabIndex: 0
+    }
+  },
+  methods: {
+    handleChangeTabCurr({index}){
+      this.currTabIndex = index
+      this.$emit('lisenterIndex', {index: index})
+    }
+  }
+}
