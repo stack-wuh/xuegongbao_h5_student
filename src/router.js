@@ -63,7 +63,18 @@ export default new Router({
           path: '/index/game/index',
           component: () => import ('@/components/studyManage/game/index')
         },
-
+        {
+          path: '/index/question/index',
+          component: () => import('@/components/studyManage/question/index')
+        },
+        {
+          path: '/index/exam/index',
+          component: () => import('@/components/studyManage/exam/index')
+        },
+        {
+          path: '/index/chair/index',
+          component: () => import('@/components/studyManage/chair/index')
+        },
 
 
         {

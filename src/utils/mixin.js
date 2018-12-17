@@ -54,6 +54,8 @@ export const changeTabCurr = {
     handleChangeTabCurr({index}){
       this.currTabIndex = index
       this.$emit('lisenterIndex', {index: index})
+
+      return index
     }
   }
 }

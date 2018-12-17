@@ -27,8 +27,11 @@ export default {
   },
   methods: {
     onLoad(e){
-      console.log('is attach  bottom')
-      this.loading = false
+      this.loading = true
+      setTimeout(() => {
+        this.$emit('canGoNext', true)
+        this.loading = false
+      }, 1000)
       this.finished = true
     }
   },

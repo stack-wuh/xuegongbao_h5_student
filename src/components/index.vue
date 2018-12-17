@@ -56,14 +56,17 @@ const menuList = [
       {
         name: '问卷调查',
         icon: require('@/assets/imgs/icon-22.png'),
+        path: '/index/question/index'
       },
       {
         name: '学习考试',
         icon: require('@/assets/imgs/icon-23.png'),
+        path: '/index/exam/index'
       },
       {
         name: '讲座报告',
         icon: require('@/assets/imgs/icon-24.png'),
+        path: '/index/chair/index'
       }
     ]
   },

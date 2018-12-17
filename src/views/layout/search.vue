@@ -2,8 +2,10 @@
   <section class="wrapper search-wrapper" :class="[background ? 'background-base' : '']">
     <slot name="left"></slot>
     <section class="search-box">
-      <van-field class="my-van-field" placeholder="搜索" >
-        <img slot="left-icon"
+      <van-field v-model="keyword" class="my-van-field" placeholder="搜索" >
+        <img
+          @click="handleChange"
+          slot="left-icon"
           src="../../assets/imgs/icon-search-green.png"
           style="width: .4rem; height: .4rem; margin-right: .1rem;" alt="icon-search">
       </van-field>
@@ -13,21 +15,30 @@
 </template>
 <script>
 import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
+import {
+  changeInput
+} from '@/utils/mixin'
 export default {
   props: {
     background: {
       type: Boolean,
       default: false
-    }
+    },
   },
   name: '',
   components: {},
   computed: {},
   data(){
-    return {}
+    return {
+      keyword: ''
+    }
   },
-  methods: {},
-  created(){}
+  methods: {
+    handleChange(){
+      this.$emit('getInputChange', {keyword: this.keyword})
+    }
+  },
+  created(){},
 }
 </script>
 <style lang="less" scoped>
@@ -60,10 +71,10 @@ export default {
 }
 .background-base{
   color: #fff;
-  background-color: @base-color;
+  background-color: @base-color !important;
   .search-box{
     .my-van-field{
-      color: @base-color;
+      color: @base-color !important;
     }
   }
 }

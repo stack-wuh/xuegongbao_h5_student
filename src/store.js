@@ -6,11 +6,14 @@ Vue.use(Vuex)
 
 
 import User from '@/vuex/modules/user'
-
+import Common from '@/vuex/common'
+import Study from '@/vuex/modules/study'
 
 export default new Vuex.Store({
   ...Index,
   modules: {
-    User
+    User,
+    Common,
+    Study,
   }
 })

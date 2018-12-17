@@ -85,7 +85,7 @@ const checkStatus = response => {
 const ObjNotNull = (obj) => {
   let _obj = {}
   Object.keys(obj).map(oo => {
-    if(obj[oo]) _obj[oo] = obj[oo]
+    if(obj[oo] !== undefined || obj[oo] !== null || obj[oo] !== '') _obj[oo] = obj[oo]
   })
   return _obj
 }

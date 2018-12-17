@@ -29,7 +29,7 @@ const mutations = {
     state.form[form.field] = form.label
     state.form[form.child] = form.value
     console.log(form, 'this is form')
-  }
+  },
 }
 
 const actions = {
