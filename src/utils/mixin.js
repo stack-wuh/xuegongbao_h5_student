@@ -47,15 +47,14 @@ export const pushRouter = {
 export const changeTabCurr = {
   data(){
     return {
-      currTabIndex: 0
+      currTabIndex: 0,
     }
   },
   methods: {
     handleChangeTabCurr({index}){
       this.currTabIndex = index
       this.$emit('lisenterIndex', {index: index})
-
       return index
-    }
+    },
   }
 }

@@ -34,7 +34,7 @@ export default {
     valueKey: {
       type: String,
       required: false,
-      default: ''
+      default: 'label'
     },
     index: {
       type: [String, Number],

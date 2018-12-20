@@ -75,7 +75,18 @@ export default new Router({
           path: '/index/chair/index',
           component: () => import('@/components/studyManage/chair/index')
         },
-
+        {
+          path: '/index/firend/index',
+          component: () => import ('@/components/jobManage/firend/index')
+        },
+        {
+          path: '/index/high/index',
+          component: () => import ('@/components/jobManage/highschool/index')
+        },
+        {
+          path: '/index/job/index',
+          component: () => import ('@/components/jobManage/job/index')
+        },
 
         {
           path: '/signin',

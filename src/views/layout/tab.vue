@@ -2,8 +2,11 @@
   <section class="wrapper">
     <section class="tabbar">
       <ul class="tabbar-list">
-        <li @click="handleChangeTabCurr({index: 0})" class="tabbar-item" :class="[currTabIndex == 0 ? 'tabbar-item__active' : '']">通知</li>
-        <li @click="handleChangeTabCurr({index: 1})" class="tabbar-item" :class="[currTabIndex == 1 ? 'tabbar-item__active' : '']">招募令</li>
+          <li
+            v-for="(item, index) in data" :key="index"
+            @click="handleChangeTabCurr({index})"
+            class="tabbar-item"
+            :class="[currTabIndex == index ? 'tabbar-item__active' : '']">{{item.name}}</li>
       </ul>
     </section>
     <slot name="search"></slot>
@@ -13,7 +16,20 @@
 import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
 import {changeTabCurr} from '@/utils/mixin'
 export default {
-  props: {},
+  props: {
+    data: {
+      type: Array,
+      default: [
+        {
+          name: '标签1'
+        },
+        {
+          name: '标签2'
+        }
+      ],
+      required: false
+    }
+  },
   name: '',
   components: {},
   computed: {},
@@ -22,7 +38,7 @@ export default {
 
     }
   },
-  methods: {},
+  methods: {}, 
   created(){},
   mixins: [changeTabCurr]
 }

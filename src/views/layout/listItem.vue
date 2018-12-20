@@ -1,6 +1,6 @@
 <template>
   <section class="list-item__wrapper">
-    <section class="list-item" :class="[border ? 'border-top' : 'border-bottom',]">
+    <section class="list-item" :class="[border ? 'border-top' : 'border-bottom']">
       <slot name="left"></slot>
       <section class="list-item__center">
         <slot></slot>

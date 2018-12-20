@@ -76,14 +76,17 @@ const menuList = [
       {
         name: '企业校友',
         icon: require('@/assets/imgs/icon-31.png'),
+        path: '/index/firend/index'
       },
       {
         name: '高校宣讲',
         icon: require('@/assets/imgs/icon-32.png'),
+        path: '/index/high/index',
       },
       {
         name: '招聘信息',
         icon: require('@/assets/imgs/icon-33.png'),
+        path: '/index/job/index'
       },
       {
         name: '勤工助学',
