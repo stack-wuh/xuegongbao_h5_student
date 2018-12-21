@@ -3,13 +3,15 @@ import {
   schoolist,
   schoolcollect,
   othersource,
-  schools
+  schools,
+  jobList
 }from '@/api/job.api.js'
 
 const state = {
   firendList: [], //企业校友数据列表
   schoolList: [], //搞笑宣讲数据列表
   schools: [], //筛选学校列表
+  jobList: [], //招聘信息列表
 }
 
 const mutations = {
@@ -99,6 +101,13 @@ const actions = {
   async GetSchools(context){
     const response = await schools()
     context.commit('SET_SCHOOLS_INFO', response)
+    return response
+  },
+
+  async GetJobList(context, {search: data}){
+    const response  = await jobList({
+      data
+    })
     return response
   }
 }

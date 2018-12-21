@@ -58,3 +58,24 @@ export const changeTabCurr = {
     },
   }
 }
+
+export const getListMore = {
+  data(){
+    return {
+      canShow: false,
+    }
+  },
+  methods: {
+    handleScholl(e){
+      let clientHeight = e.target.clientHeight ,
+          scrollTop = e.target.scrollTop,
+          scrollHeight = e.target.scrollHeight
+          if(scrollHeight  == clientHeight + scrollTop){
+            this.getMore()
+          }
+    },
+    getMore(){
+      console.log('is loading')
+    }
+  }
+}

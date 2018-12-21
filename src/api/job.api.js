@@ -36,3 +36,10 @@ export const schools = () =>
   $http.post({
     url: '/recruit/preachGroup'
   }).catch(_catch)
+
+export const jobList = ({
+  data
+}) => $http.post({
+  url: '/job/zhaopinList',
+  data
+}).catch(_catch)

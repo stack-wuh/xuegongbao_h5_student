@@ -1,23 +1,23 @@
 <template>
   <section class="content-wrapper">
-    <my-list-wrapper>
+    <my-list @scroll.native="handleScholl" :finishedText="isShowText">
       <my-search @getInputChange="getInputChange">
         <my-picker @emitterPick="handlePicker" :data="pick" slot="left" ></my-picker>
       </my-search>
-      <my-list-item border>
+      <my-list-item v-for="(item, index) in list" :key="index" border>
         <section class="item-box flex flex-flow__col">
-          <p>
-            <span>2018移动端测试</span>
-            <img src="../../../assets/imgs/icon-collected-s.png" alt="icon">
+          <p class="flex flex-justify__between item__title">
+            <span class="f16">2018移动端测试</span>
+            <img src="../../../assets/imgs/icon-collected-s.png" alt="icon-collect">
           </p>
-          <p>
-            <span>测试岗位</span>
-            <span>测试岗位</span>
-          </p>
+          <!-- <p v-if="item.posts" class="tips-list">
+            <span v-for="(sub, sid) in item.posts" :key="sid">{{sub.name}}</span>
+            <img v-show="item.posts.length === 3"  src="../../../assets/imgs/icon-more.png" alt="icon-more">
+          </p> -->
           <p>发布时间: 2018asdasdasd</p>
         </section>
       </my-list-item>
-    </my-list-wrapper>
+    </my-list>
   </section>
 </template>
 <script>
@@ -26,15 +26,16 @@ import MySearch from '@/views/layout/search'
 import MyListWrapper from '@/views/layout/listWrapper'
 import MyListItem from '@/views/layout/listItem'
 import MyPicker from '@/views/layout/picker'
+import MyList from '@/views/layout/list'
 import {
-  reloadTitleMixin
+  reloadTitleMixin, getListMore
 } from '@/utils/mixin'
 
 export default {
   props: {},
   name: '',
   components: {
-    MyListWrapper, MyListItem, MySearch, MyPicker
+    MyListWrapper, MyListItem, MySearch, MyPicker, MyList
   },
   computed: {},
   data(){
@@ -49,24 +50,84 @@ export default {
           value:1
         }
       ],
-      pickIndex: 0
+      pickIndex: 0,
+
+      search: {
+        search: '',
+        page: 1,
+        classify: ''
+      },
+
+      list: [],
+      isShowMore: false,
+      isShowText: '没有更多啦'
     }
   },
   methods: {
+    ...mapActions({
+      'GetJobList': 'GetJobList'
+    }),
     getInputChange(e){
       console.log(e)
     },
     handlePicker(e){
       this.pickIndex = e.data.value
       console.log(e)
+    },
+    getMore(){
+      if(this.isShowMore){
+        this.search.page ++
+        this.GetJobList({search: this.search}).then(res => {
+          this.list = this.list.concat(res)
+          this.isShowMore = this.list.length == 10 ? true : false
+        })
+      }
+    },
+    fetchData(){
+      this.isShowText = '更在加载更多'
+      this.GetJobList({search: this.search}).then(res => {
+        this.list = this.list.concat(res)
+        this.isShowMore = this.list.length == 10 ? true : false
+        this.isShowText = '没有更多啦'
+      })
     }
   },
   created(){
     this.docTitle = '招聘信息'
+    this.GetJobList({search: this.search}).then(res => {
+      this.list = this.list.concat(res)
+      this.isShowMore = this.list.length == 10 ? true : false
+    })
   },
-  mixins: [reloadTitleMixin]
+  mixins: [reloadTitleMixin, getListMore]
 }
 </script>
 <style lang="less" scoped>
+@import '../../../assets/style/color.less';
 
+
+.content-wrapper{
+  .item-box{
+    width: inherit;
+    p, span{
+      font-size: .26rem;
+    }
+    p.item__title{
+      width: 100%;
+    }
+    p.tips-list{
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin: .2rem 0;
+      span{
+        margin-right: .3rem;
+        padding: .04rem .1rem;
+        color: @base-color;
+        background-color: #BAE3E0;
+        border-radius: .08rem;
+      }
+    }
+  }
+}
 </style>
