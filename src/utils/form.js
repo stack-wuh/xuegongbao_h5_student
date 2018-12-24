@@ -209,5 +209,72 @@ export const forms = [
         placeholder: '',
       }
     ],
+  },
+  {
+    name: '意见征集',
+    desc: '意见征集提交表单',
+    picks: ['意见征集'],
+    types: 1,
+    docTitle: '发布意见征集',
+    list: [
+      {
+        label: '分类',
+        type: 'select',
+        field: 'categoryName',
+        list: ['功能改进','生活','情感','就业','学习']
+      },
+      {
+        label: '是否匿名',
+        type: 'switch',
+        field: 'cryptonym',
+      },
+      {
+        label: '提交对象',
+        type: 'select',
+        field: 'object',
+        list: ['辅导员', '管理员']
+      },
+      {
+        label: '意见',
+        type: 'textarea',
+        field: 'content',
+      }
+    ],
+  },
+  {
+    name: '资助申请',
+    desc: '资助申请提交表单',
+    picks: ['资助申请'],
+    types: 1,
+    docTitle: '发布资助申请',
+    list: [
+      {
+        label: '姓名',
+        type: 'default',
+        field: 'username',
+        list: ['功能改进','生活','情感','就业','学习']
+      },
+      {
+        label: '专业班级',
+        type: 'default',
+        field: 'klass',
+      },
+      {
+        label: '联系方式',
+        type: 'default',
+        field: 'telNumber'
+      },
+      {
+        label: '申请类型',
+        type: 'select',
+        field: 'type',
+        list: ['奖学金']
+      },
+      {
+        label: '申请理由',
+        type: 'textarea',
+        field: 'reason'
+      }
+    ],
   }
 ]

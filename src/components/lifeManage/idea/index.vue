@@ -3,7 +3,7 @@
     <my-list @scroll.native="handleScholl" :finishedText="isShowText">
       <my-search background slot="search">
         <my-picker @emitterPick="emitterPick" :data="temp_category" slot="left" ></my-picker>
-        <img src="../../../assets/imgs/icon-edit-white.png" alt="icon-edit" slot="right" />
+        <img @click="$push({path: '/base/form', query: {name: '意见征集'}})" src="../../../assets/imgs/icon-edit-white.png" alt="icon-edit" slot="right" />
       </my-search>
       <my-list-item v-for="(item, index) in list" :key="index" border>
         <span class="item-title" :class="temp_color[item.category_name]" slot="left">{{item.category_name}}</span>
@@ -14,8 +14,8 @@
             </span>
             <time class="item-content__time">{{item.date}}</time>
           </p>
-          <p class="text-over" >{{item.content}}</p>
-          <p class="item-content__btn">展开</p>
+          <p :class="[!item.isOpen ? 'text-over' : '' ]" >{{item.content}}{{item.content}}</p>
+          <p @click="handleToggleState(index)" class="item-content__btn">{{!item.isOpen ? '展开' : '隐藏'}}</p>
         </section>
       </my-list-item>
     </my-list>
@@ -28,7 +28,7 @@ import MyListItem from '@/views/layout/listItem'
 import MyPicker from '@/views/layout/picker'
 import MySearch from '@/views/layout/search'
 import {
-  reloadTitleMixin, getListMore
+  reloadTitleMixin, getListMore, pushRouter
 } from '@/utils/mixin'
 
 
@@ -73,11 +73,31 @@ export default {
     ...mapActions({
       'IdeasList': 'IdeasList'
     }),
+    /**
+     * [handleToggleState 展开/关闭按钮事件]
+     * @method handleToggleState
+     * @param  {[type]}          index [description]
+     * @return {[type]}                [description]
+     */
+    handleToggleState(index){
+      this.$set(this.list[index], 'isOpen', !this.list[index]['isOpen'])
+    },
+    /**
+     * [emitterPick MyPicker 的change事件]
+     * @method emitterPick
+     * @param  {[type]}    e [description]
+     * @return {[type]}      [description]
+     */
     emitterPick(e){
       this.list = []
       this.search.categoryName = e.data.value
       this.fetchData()
     },
+    /**
+     * [fetchData fetch]
+     * @method fetchData
+     * @return {[type]}  [description]
+     */
     fetchData(){
       this.isShowText = '正在加载更多'
       this.IdeasList({search: this.search}).then(res => {
@@ -91,7 +111,7 @@ export default {
     this.docTitle = this.query.tag
     this.fetchData()
   },
-  mixins: [reloadTitleMixin, getListMore]
+  mixins: [reloadTitleMixin, getListMore, pushRouter]
 }
 </script>
 <style lang="less" scoped>

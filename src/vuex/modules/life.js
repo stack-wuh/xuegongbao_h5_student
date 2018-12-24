@@ -7,7 +7,10 @@ import {
   ideasList,
   applyList,
   voteList,
+  postIdeaInfo,
+  postApplyInfo
 }from '@/api/life.api.js'
+
 
 const state = {}
 
@@ -113,6 +116,48 @@ const actions = {
     const response  = await voteList({data})
 
     return response
+  },
+
+  /**
+   * [postIdeaInfo 意见征集 -- 发布]
+   * @method postIdeaInfo
+   * @param  {[type]}     context [description]
+   * @param  {[type]}     form    [description]
+   * @return {Promise}            [description]
+   */
+  async PostIdeaInfo(context, {form: data}){
+    const response = await postIdeaInfo({data})
+    if(response.error == 0){
+      setTimeout(() => {
+        window.$router.push({path: '/life/idea/index'})
+      }, 1000)
+    }
+  },
+
+  /**
+   * @method [postApplyInfo 资助申请提交表单]
+   * @param  {[type]}      context [description]
+   * @param  {[type]}      form    [description]
+   * @return {Promise}             [description]
+   */
+  async PostApplyInfo(context, {form: {
+    reason,
+    telNumber,
+    type,
+  }}){
+    const response = await postApplyInfo({
+      data: {
+        reason,
+        telNumber,
+        type,
+      }
+    })
+    if(!~~response.error){
+      setTimeout(() => {
+        window.$router.push({path: '/life/apply/index'})
+      }, 1000)
+    }
+
   }
 }
 

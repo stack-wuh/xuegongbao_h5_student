@@ -113,6 +113,10 @@ export default new Router({
           path: '/life/pick/index',
           component: () => import('@/components/lifeManage/pick/index')
         },
+        {
+          path: '/life/pick/detail',
+          component: () => import('@/components/lifeManage/pick/detail')
+        },
 
         {
           path: '/signin',

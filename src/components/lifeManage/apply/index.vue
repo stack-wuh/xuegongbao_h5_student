@@ -3,7 +3,7 @@
     <my-list @scroll.native="handleScholl" :finishedText="isShowText">
       <my-search background slot="search">
         <my-picker @emitterPick="emitterPick" :data="cateList" slot="left" ></my-picker>
-        <img src="../../../assets/imgs/icon-edit-white.png" alt="icon-edit" slot="right" />
+        <img @click="$push({path: '/base/form', query: {name: query.tag}})" src="../../../assets/imgs/icon-edit-white.png" alt="icon-edit" slot="right" />
       </my-search>
       <my-list-item v-for="(item, index) in list" :key="index" border>
         <section class="item-content">
@@ -25,7 +25,7 @@ import MyListItem from '@/views/layout/listItem'
 import MyPicker from '@/views/layout/picker'
 import MySearch from '@/views/layout/search'
 import {
-  reloadTitleMixin, getListMore
+  reloadTitleMixin, getListMore, pushRouter
 } from '@/utils/mixin'
 
 
@@ -84,7 +84,7 @@ export default {
     this.docTitle = this.query.tag
     this.fetchData()
   },
-  mixins: [reloadTitleMixin, getListMore]
+  mixins: [reloadTitleMixin, getListMore, pushRouter]
 }
 </script>
 <style lang="less" scoped>

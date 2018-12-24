@@ -3,7 +3,7 @@
     <my-list @scroll.native="handleScholl" :finishedText="isShowText">
       <my-search @getInputChange="handleInputChange" background slot="search"> </my-search>
       <my-list-item v-for="(item, index) in list" :key="index">
-        <section class="item-content">
+        <section  @click="$push({path: '/life/pick/detail', query: {id: item.id}})" class="item-content">
           <p class="item-content__title">{{item.title || '暂无'}}</p>
           <p class="item-content__time">投票发起人: {{item.name}}</p>
           <p class="item-content__time">投票截止时间: {{item.endtime || '暂无'}}</p>
@@ -20,7 +20,7 @@ import MyListItem from '@/views/layout/listItem'
 import MyPicker from '@/views/layout/picker'
 import MySearch from '@/views/layout/search'
 import {
-  reloadTitleMixin, getListMore
+  reloadTitleMixin, getListMore, pushRouter
 } from '@/utils/mixin'
 
 
@@ -90,7 +90,7 @@ export default {
     this.docTitle = this.query.tag
     this.fetchData()
   },
-  mixins: [reloadTitleMixin, getListMore]
+  mixins: [reloadTitleMixin, getListMore, pushRouter]
 }
 </script>
 <style lang="less" scoped>

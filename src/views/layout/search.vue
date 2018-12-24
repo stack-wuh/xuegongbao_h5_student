@@ -59,6 +59,8 @@ export default {
   overflow: hidden;
   background-color: #fff;
   .search-box{
+    display: flex;
+    align-items: center;
     flex: 1;
     height: inherit;
     padding: .1rem .2rem;

@@ -14,18 +14,39 @@
         :key="index" :title="item.label"
         :value="form[item.field] ||  '请选择' + item.label">
       </van-cell>
+      <section
+        v-for="(item, index) in formLists(search).list"
+        :key="index"  class="label-cell"
+        v-if="item.type == 'switch'">
+        <section class="label-cell__left">
+          <span class="label-cell__title">{{item.label}}</span>
+        </section>
+        <section class="label-cell__right">
+          <van-switch
+            v-model="form[item.field]" ></van-switch>
+        </section>
+      </section>
       <van-cell @click="handleToggleupop({type: item.type, index, field: item.field})"
         v-if="item.type === 'date'"
         is-link v-for="(item, index) in formLists(search).list"
         :key="index" :title="item.label"
         :value="form[item.field] || '请选择' + item.label">
       </van-cell>
+      <van-field v-model="form[item.field]"
+        v-if="item.type === 'textarea'"
+        v-for="(item, index) in formLists(search).list"
+        :key="index"
+        :label="item.label"
+        type="textarea"
+        rows = '1'
+        autosize
+        :placeholder="item.placeholder || '请编辑' + item.label"  />
     </van-cell-group>
     <slot name="img-uploader"></slot>
     <van-popup position="bottom" v-model = 'isShowPupop'>
       <van-picker
         v-if="types == 0" show-toolbar
-        :columns = "[{label: 'asd', value: '1111'}]"
+        :columns = "formLists(search).list[currClickIndex].list"
         @confirm = '(e) => {this.handleConfirm({label: this.field, value: e})}'
         @cancel = 'handleCancel'
         value-key = 'label'>
@@ -75,22 +96,26 @@ export default {
       currIndex: -1, //选中的那一项的下标
       picks: ['select', 'datetime', 'date', 'time'],
       field: '', //备选的字段号
+      currClickIndex: -1, //点击元素的序列号
     }
   },
   methods: {
     ...mapActions({
-      'handleSaveForm': 'handleSaveForm'
+      'handleSaveForm': 'handleSaveForm',
+      'PostIdeaInfo': 'PostIdeaInfo',
+      'PostApplyInfo': 'PostApplyInfo'
     }),
     /**
      * [handleToggleupop description]
      * @method handleToggleupop
      * @return {[type]}         [popup展示的类型, -1: 不展示, 0: picker, 1: DateTimerPicker, 2: date, 3: time]
      */
-    handleToggleupop({type, field}){
+    handleToggleupop({type, field, index}){
       let _arr = ['select', 'datetime', 'date', 'time']
       this.isShowPupop = !this.isShowPupop
       this.types = _arr.indexOf(type)
       this.field = field
+      this.currClickIndex = index
     },
 
     handleCancel(){
@@ -107,10 +132,15 @@ export default {
       this.handleSaveForm({form})
     },
     handleClick(){
-      let map = new Map([
-        [{name: '修改密码'}, ]
+      let actions = new Map([
+        [{name: '意见征集'}, 'PostIdeaInfo'],
+        [{name: '资助申请'}, 'PostApplyInfo']
       ])
-      console.log('is clicked submit')
+      let action = [...actions].filter(([key, val]) => key.name == this.query.name)
+      action.forEach(([key, val]) => {
+        this[val].call(this, {form: this.form})
+      })
+      console.log('this is click submit', this.form)
     }
   },
   created() {
