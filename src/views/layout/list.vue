@@ -34,6 +34,7 @@ export default {
   height: 100vh;
   overflow: hidden;
   overflow-y: scroll;
+  background-color: @base-background;
 
   p.tips-text{
     width: 100vw;

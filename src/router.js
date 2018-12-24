@@ -87,6 +87,32 @@ export default new Router({
           path: '/index/job/index',
           component: () => import ('@/components/jobManage/job/index')
         },
+        {
+          path: '/index/help/index',
+          component: () => import('@/components/jobManage/help/index')
+        },
+        {
+          path: '/life/shows',
+          alias: ['/life/cars','/life/transtation'],
+          component: () => import('@/components/lifeManage/shows')
+        },
+        {
+          path: '/life/phones',
+          alias: ['/life/emails'],
+          component: () => import('@/components/lifeManage/phones')
+        },
+        {
+          path: '/life/idea/index',
+          component: () => import('@/components/lifeManage/idea/index'),
+        },
+        {
+          path: '/life/apply/index',
+          component: () => import('@/components/lifeManage/apply/index')
+        },
+        {
+          path: '/life/pick/index',
+          component: () => import('@/components/lifeManage/pick/index')
+        },
 
         {
           path: '/signin',

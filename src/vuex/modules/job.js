@@ -4,7 +4,9 @@ import {
   schoolcollect,
   othersource,
   schools,
-  jobList
+  jobList,
+  helpListAll,
+  helpListColl,
 }from '@/api/job.api.js'
 
 const state = {
@@ -104,8 +106,43 @@ const actions = {
     return response
   },
 
+  /**
+   * [GetJobList 获取招聘信息列表]
+   * @method GetJobList
+   * @param  {[type]}   context [description]
+   * @param  {[type]}   search  [description]
+   * @return {Promise}          [description]
+   */
   async GetJobList(context, {search: data}){
     const response  = await jobList({
+      data
+    })
+    return response
+  },
+
+  /**
+   * [helpListAll 获取勤工助学的列表]
+   * @method helpListAll
+   * @param  {[type]}    context [description]
+   * @param  {[type]}    search  [description]
+   * @return {Promise}           [description]
+   */
+  async HelpListAll(context, {search: data}){
+    const response  = await helpListAll({
+      data
+    })
+    return response
+  },
+
+  /**
+   * [HelpListColl 获取勤工助学的收藏列表]
+   * @method HelpListColl
+   * @param  {[type]}     context [description]
+   * @param  {[type]}     search  [description]
+   * @return {Promise}            [description]
+   */
+  async HelpListColl(context, {search: data}){
+    const response = await helpListColl({
       data
     })
     return response

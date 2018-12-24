@@ -2,7 +2,12 @@
   <section class="wrapper search-wrapper" :class="[background ? 'background-base' : '']">
     <slot name="left"></slot>
     <section class="search-box">
-      <van-field v-model="keyword" class="my-van-field" placeholder="搜索" >
+      <van-field
+        v-model="keyword"
+        class="my-van-field"
+        placeholder="搜索"
+        clearable
+        @clear="handleChange">
         <img
           @click="handleChange"
           slot="left-icon"

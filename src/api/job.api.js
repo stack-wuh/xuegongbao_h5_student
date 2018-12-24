@@ -43,3 +43,17 @@ export const jobList = ({
   url: '/job/zhaopinList',
   data
 }).catch(_catch)
+
+export const helpListAll = ({
+  data
+}) => $http.post({
+  url: '/job/qgzxList',
+  data
+}).catch(_catch)
+
+export const helpListColl = ({
+  data
+}) => $http.post({
+  url: '/job/myCollect',
+  data
+}).catch(_catch)

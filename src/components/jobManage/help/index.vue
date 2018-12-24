@@ -10,11 +10,12 @@
             <span class="f16">2018移动端测试</span>
             <img src="../../../assets/imgs/icon-collected-s.png" alt="icon-collect">
           </p>
-          <p v-if="item.posts" class="tips-list">
-            <span v-for="(sub, sid) in item.posts" :key="sid">{{sub.name}}</span>
-            <img v-show="item.posts.length === 3"  src="../../../assets/imgs/icon-more.png" alt="icon-more">
+          <p>联系人: 1111</p>
+          <p class="flex flex-justify__between item__title">
+            <span>发布时间: 2018asdasdasd</span>
+            <span class="danger-text">￥111/月</span>
           </p>
-          <p>发布时间: 2018asdasdasd</p>
+          <p>要求: </p>
         </section>
       </my-list-item>
     </my-list>
@@ -65,47 +66,51 @@ export default {
   },
   methods: {
     ...mapActions({
-      'GetJobList': 'GetJobList'
+      'HelpListAll': 'HelpListAll',
+      'HelpListColl': 'HelpListColl'
     }),
     getInputChange(e){
-      console.log(e)
+      this.list = []
+      this.search.search = e.keyword
+      this.fetchData()
     },
     handlePicker(e){
       this.pickIndex = e.data.value
-      console.log(e)
+      this.list = []
+      this.fetchData()
     },
     getMore(){
       if(this.isShowMore){
         this.search.page ++
-        this.GetJobList({search: this.search}).then(res => {
-          this.list = this.list.concat(res)
-          this.isShowMore = this.list.length == 10 ? true : false
-        })
+        this.fetchData()
       }
     },
     fetchData(){
       this.isShowText = '更在加载更多'
-      this.GetJobList({search: this.search}).then(res => {
-        this.list = this.list.concat(res)
-        this.isShowMore = this.list.length == 10 ? true : false
-        this.isShowText = '没有更多啦'
-      })
+      if(this.pickIndex == 0){
+        this.HelpListAll({search: this.search}).then(res => {
+          this.list = this.list.concat(res)
+          this.isShowMore = this.list.length == 10 ? true : false
+          this.isShowText = '没有更多啦'
+        })
+      }else {
+        this.HelpListColl({search: {...this.search, type: 3}}).then(res => {
+          this.list = this.list.concat(res)
+          this.isShowMore = this.list.length == 10 ? true : false
+          this.isShowText = '没有更多啦'
+        })
+      }
     }
   },
   created(){
     this.docTitle = '招聘信息'
-    this.GetJobList({search: this.search}).then(res => {
-      this.list = this.list.concat(res)
-      this.isShowMore = this.list.length == 10 ? true : false
-    })
+    this.fetchData()
   },
   mixins: [reloadTitleMixin, getListMore]
 }
 </script>
 <style lang="less" scoped>
 @import '../../../assets/style/color.less';
-
-
 .content-wrapper{
   .item-box{
     width: inherit;
@@ -128,6 +133,9 @@ export default {
         border-radius: .08rem;
       }
     }
+  }
+  .danger-text{
+    color: @base-danger;
   }
 }
 </style>

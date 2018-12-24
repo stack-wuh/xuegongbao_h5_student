@@ -47,6 +47,8 @@ export default {
     background-color: #fff;
     .list-item__center{
       flex: 1;
+      max-width: 100vw;
+      overflow: hidden;
     }
   }
 

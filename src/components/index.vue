@@ -91,6 +91,7 @@ const menuList = [
       {
         name: '勤工助学',
         icon: require('@/assets/imgs/icon-34.png'),
+        path: '/index/help/index'
       }
     ]
   },
@@ -100,38 +101,46 @@ const menuList = [
       {
         name: '意见征集',
         icon: require('@/assets/imgs/icon-41.png'),
+        path: '/life/idea/index'
       },
       {
         name: '资助申请',
         icon: require('@/assets/imgs/icon-42.png'),
+        path: '/life/apply/index'
       },
       {
         name: '评比评选',
         icon: require('@/assets/imgs/icon-43.png'),
+        path: '/life/pick/index',
       },
       {
         name: '校园电话',
         icon: require('@/assets/imgs/icon-44.png'),
+        path: '/life/phones'
       },
       {
         name: '学期校历',
         icon: require('@/assets/imgs/icon-45.png'),
         style: 'margin-top: .4rem;',
+        path: '/life/shows'
       },
       {
         name: '校车时刻',
         icon: require('@/assets/imgs/icon-46.png'),
         style: 'margin-top: .4rem;',
+        path: '/life/cars'
       },
       {
         name: '火车站路线',
         icon: require('@/assets/imgs/icon-47.png'),
         style: 'margin-top: .4rem;',
+        path: '/life/transtation'
       },
       {
         name: '教师邮箱',
         icon: require('@/assets/imgs/icon-48.png'),
         style: 'margin-top: .4rem;',
+        path: '/life/emails'
       }
     ]
   }

@@ -9,6 +9,7 @@ import User from '@/vuex/modules/user'
 import Common from '@/vuex/common'
 import Study from '@/vuex/modules/study'
 import Job from '@/vuex/modules/job'
+import Life from '@/vuex/modules/life'
 
 export default new Vuex.Store({
   ...Index,
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     User,
     Common,
     Study,
-    Job
+    Job,
+    Life
   }
 })
