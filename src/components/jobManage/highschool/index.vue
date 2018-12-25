@@ -1,6 +1,6 @@
 <template>
   <section class="content-wrapper">
-    <my-list-wrapper>
+    <my-list :finishedText="isShowText" @scroll.native="handleScholl">
         <section slot="tab" class="header">
           <my-tab @lisenterIndex="handleChangeTabCurr" :data="tabs"></my-tab>
           <my-search @getInputChange="getInputChange" style="background-color: #fff;">
@@ -14,8 +14,12 @@
         </section>
         <section style="height: 1.6rem;" ></section>
         <my-list-item v-for="(item, index) in list" :key="index" border>
-            <section class="item-box">
-              <p class="f16">{{item.title}}</p>
+            <section @click="$push({path: '/index/high/detail', query: {tag: query.tag, id: item.id}})" class="item-box">
+              <p class="flex flex-justify__between" >
+                <span class="f16">{{item.title}}</span>
+                <img @click.stop="handleCollect(item.id)"
+                  :src="item.collect ? collectActive : collectDefault" alt="collect">
+              </p>
               <p v-if="item.posts" class="item-elems">
                 <span v-for="(sub, sid) in item.posts" :key="sid">{{sub.name}}</span>
                 <img v-show="item.posts.length === 3" src="../../../assets/imgs/icon-more.png" alt="icon-more">
@@ -25,7 +29,7 @@
               <p>地点: {{item.location}}</p>
             </section>
         </my-list-item>
-    </my-list-wrapper>
+    </my-list>
     <van-popup
       v-model="isShowPopup"
       position="right">
@@ -50,8 +54,9 @@ import MyPicker from '@/views/layout/picker'
 import MySearch from '@/views/layout/search'
 import MyListWrapper from '@/views/layout/listWrapper'
 import MyListItem from '@/views/layout/listItem'
+import MyList from '@/views/layout/list'
 import {
-  reloadTitleMixin, changeTabCurr
+  reloadTitleMixin, changeTabCurr, getListMore, pushRouter
 } from '@/utils/mixin'
 
 export default {
@@ -62,7 +67,8 @@ export default {
     MyPicker,
     MySearch,
     MyListWrapper,
-    MyListItem
+    MyListItem,
+    MyList
   },
   computed: {
     ...mapState({
@@ -97,7 +103,9 @@ export default {
         school: '',
       },
       pickIndex: -1,
-      isShowPopup: false
+      isShowPopup: false,
+
+      isShowText: '没有更多啦'
     }
   },
   methods: {
@@ -105,9 +113,15 @@ export default {
       'GetSchoolList': 'GetSchoolList',
       'GetSchoolCollect': 'GetSchoolCollect',
       'GetSchoolListOther': 'GetSchoolListOther',
-      'GetSchools': 'GetSchools'
+      'GetSchools': 'GetSchools',
+      'HignSchoolCollect': 'HignSchoolCollect'
     }),
     ...mapMutations(['CLEAR_SCHOOL_ALL']),
+    handleCollect(id){
+      this.HignSchoolCollect({id, type: 1}).then(res => {
+        if(!res.error) this.fetchData()
+      })
+    },
     handleChangeTabCurr(e){
       this.docTitle = this.tabs[e.index].name
       this.currTabIndex = e.index
@@ -163,6 +177,14 @@ export default {
       action.forEach(([key, val]) => {
         this[val]({search: key.search})
       })
+    },
+    getMore(){
+      let isShowMore = this.list.length == 10 ? true : false
+      this.isShowText = this.list.length == 10 ? '正在加载更多' : '没有更多啦'
+      if(isShowMore){
+        this.search.page ++
+        this.fetchData()
+      }
     }
   },
   created(){
@@ -170,7 +192,7 @@ export default {
     this.GetSchoolList({search: this.search})
     this.GetSchools()
   },
-  mixins: [reloadTitleMixin, changeTabCurr]
+  mixins: [reloadTitleMixin, changeTabCurr, getListMore, pushRouter]
 }
 </script>
 <style lang="less" scoped>

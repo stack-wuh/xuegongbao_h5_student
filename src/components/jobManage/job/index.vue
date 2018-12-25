@@ -5,10 +5,10 @@
         <my-picker @emitterPick="handlePicker" :data="pick" slot="left" ></my-picker>
       </my-search>
       <my-list-item v-for="(item, index) in list" :key="index" border>
-        <section class="item-box flex flex-flow__col">
+        <section @click="$push({path: '/index/job/detail', query: {tag: query.tag, id: item.id}})" class="item-box flex flex-flow__col">
           <p class="flex flex-justify__between item__title">
             <span class="f16">2018移动端测试</span>
-            <img src="../../../assets/imgs/icon-collected-s.png" alt="icon-collect">
+            <img @click.stop="handleCollect(item.id)" :src="item.collect ? collectActive : collectDefault" alt="icon-collect">
           </p>
           <p v-if="item.posts" class="tips-list">
             <span v-for="(sub, sid) in item.posts" :key="sid">{{sub.name}}</span>
@@ -28,7 +28,7 @@ import MyListItem from '@/views/layout/listItem'
 import MyPicker from '@/views/layout/picker'
 import MyList from '@/views/layout/list'
 import {
-  reloadTitleMixin, getListMore
+  reloadTitleMixin, getListMore, pushRouter
 } from '@/utils/mixin'
 
 export default {
@@ -65,14 +65,26 @@ export default {
   },
   methods: {
     ...mapActions({
-      'GetJobList': 'GetJobList'
+      'GetJobList': 'GetJobList',
+      'HignSchoolCollect': 'HignSchoolCollect',
+      'JobCollect': 'JobCollect'
     }),
     getInputChange(e){
-      console.log(e)
+      this.search.search = e.keyword
+      this.fetchData()
     },
     handlePicker(e){
+      this.list = []
+      this.search = {page: 1, search: ''}
       this.pickIndex = e.data.value
-      console.log(e)
+      this.search.classify = e.data.label
+      this.fetchData()
+    },
+    handleCollect(id){
+      this.list = []
+      this.HignSchoolCollect({id, type: 2}).then(res => {
+        if(!res.error) this.fetchData()
+      })
     },
     getMore(){
       if(this.isShowMore){
@@ -85,21 +97,25 @@ export default {
     },
     fetchData(){
       this.isShowText = '更在加载更多'
-      this.GetJobList({search: this.search}).then(res => {
-        this.list = this.list.concat(res)
-        this.isShowMore = this.list.length == 10 ? true : false
-        this.isShowText = '没有更多啦'
-      })
+      if(this.pickIndex == 0){
+        this.GetJobList({search: this.search}).then(res => {
+          this.list = this.list.concat(res)
+          this.isShowMore = this.list.length == 10 ? true : false
+        })
+      }else if(this.pickIndex == 1){
+        this.JobCollect({search: {...this.search, type: 2}}).then(res => {
+          this.list = this.list.concat(res)
+          this.isShowMore = this.list.length == 10 ? true : false
+        })
+      }
+      this.isShowText = '没有更多啦'
     }
   },
   created(){
     this.docTitle = '招聘信息'
-    this.GetJobList({search: this.search}).then(res => {
-      this.list = this.list.concat(res)
-      this.isShowMore = this.list.length == 10 ? true : false
-    })
+    this.fetchData()
   },
-  mixins: [reloadTitleMixin, getListMore]
+  mixins: [reloadTitleMixin, getListMore, pushRouter]
 }
 </script>
 <style lang="less" scoped>

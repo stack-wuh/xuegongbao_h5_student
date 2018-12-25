@@ -66,3 +66,17 @@ export const postApplyInfo = ({
   url: '/opinion/subInsert',
   data
 }).catch(_catch)
+
+export const voteDetail = ({
+  data
+}) => $http.post({
+  url: '/Questionnaire/detailVote',
+  data
+}).catch(_catch)
+
+export const voteAdd = ({
+  data
+}) => $http.post({
+  url: '/Questionnaire/addVote',
+  data
+}).catch(_catch)

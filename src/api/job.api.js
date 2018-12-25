@@ -57,3 +57,74 @@ export const helpListColl = ({
   url: '/job/myCollect',
   data
 }).catch(_catch)
+
+
+export const firendDetail = ({
+  data
+}) => $http.post({
+  url: '/job/qywhDetail',
+  data
+}).catch(_catch)
+
+export const firendDetailFind = ({
+  data
+}) => $http.post({
+  url: '/job/alumnusfind',
+  data
+}).catch(_catch)
+
+export const hignSchoolDetail = ({
+  data
+}) => $http.post({
+  url: '/job/xuanjiangDetail',
+  data
+}).catch(_catch)
+
+export const hignSchoolCollect = ({
+  data
+}) => $http.post({
+  url: '/job/jobCollect',
+  data
+}).catch(_catch)
+
+export const hignSchoolPost = ({
+  data
+}) => $http.post({
+  url: '/job/xuanjiangApply',
+  data
+}).catch(_catch)
+
+export const jobCollect = ({
+  data
+}) => $http.post({
+  url: '/job/myCollect',
+  data
+})
+
+export const jobDetail = ({
+  data
+}) => $http.post({
+  url: '/job/zhaopinDetail',
+  data
+}).catch(_catch)
+
+export const jobPost = ({
+  data
+}) => $http.post({
+  url: '/job/zhaopinApply',
+  data
+}).catch(_catch)
+
+export const helpDetail =  ({
+  data
+}) => $http.post({
+  url: '/job/qgzxDetail',
+  data
+}).catch(_catch)
+
+export const helpPost = ({
+  data
+}) => $http.post({
+  url: '/job/apply',
+  data
+}).catch(_catch)

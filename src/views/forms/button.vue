@@ -1,5 +1,5 @@
 <template>
-  <section class="wrapper">
+  <section class="btn-wrapper">
     <van-button @click="childClick" :size="size" :class="type" >{{text}}</van-button>
   </section>
 </template>
@@ -39,7 +39,7 @@ export default {
 </script>
 <style lang="less" scoped>
 @import '../../assets/style/color.less';
-.wrapper{
+.btn-wrapper{
   position: fixed;
   bottom: 5vh;
   left: 0;

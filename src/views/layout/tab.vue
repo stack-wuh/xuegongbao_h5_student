@@ -38,7 +38,7 @@ export default {
 
     }
   },
-  methods: {}, 
+  methods: {},
   created(){},
   mixins: [changeTabCurr]
 }
@@ -62,12 +62,14 @@ export default {
         flex: 1;
         height: 100%;
         text-align: center;
-        line-height: 2;
         color: #fff;
+        font-size: .28rem;
+        line-height: 3;
       }
       .tabbar-item__active{
-        color: #333;
         color: @base-color;
+        font-size: .32rem;
+        line-height: 2;
         background-color: #fff;
         border-top-left-radius: .1rem;
         border-top-right-radius: .1rem;

@@ -26,7 +26,7 @@
 <script>
 import {reloadTitleMixin, pushRouter} from '@/utils/mixin'
 import MyTabbar from '@/components/common/tabbar'
-
+import {mapActions} from 'vuex'
 const menuList = [
   {
     name: '考勤管理',
@@ -156,8 +156,12 @@ export default {
       menuList,
     }
   },
-  methods: {},
-  created(){},
+  methods: {
+    ...mapActions(['ReLogin']),
+  },
+  created(){
+    this.ReLogin()
+  },
   mixins:[reloadTitleMixin, pushRouter]
 }
 </script>

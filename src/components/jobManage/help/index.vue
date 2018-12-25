@@ -5,17 +5,17 @@
         <my-picker @emitterPick="handlePicker" :data="pick" slot="left" ></my-picker>
       </my-search>
       <my-list-item v-for="(item, index) in list" :key="index" border>
-        <section class="item-box flex flex-flow__col">
+        <section @click="$push({path: '/index/help/detail', query: {tag: query.tag, id: item.id}})" class="item-box flex flex-flow__col">
           <p class="flex flex-justify__between item__title">
-            <span class="f16">2018移动端测试</span>
-            <img src="../../../assets/imgs/icon-collected-s.png" alt="icon-collect">
+            <span class="f16">{{item.title}}</span>
+            <img @click.stop="handleCollect(item.id)" :src="item.collect ? collectActive: collectDefault" alt="icon-collect">
           </p>
-          <p>联系人: 1111</p>
+          <p>联系人: {{item.contact}}</p>
           <p class="flex flex-justify__between item__title">
-            <span>发布时间: 2018asdasdasd</span>
-            <span class="danger-text">￥111/月</span>
+            <span>发布时间: {{item.pubtime}}</span>
+            <span class="danger-text">￥{{item.pay}}/月</span>
           </p>
-          <p>要求: </p>
+          <p>要求: {{item.describe}}</p>
         </section>
       </my-list-item>
     </my-list>
@@ -29,7 +29,7 @@ import MyListItem from '@/views/layout/listItem'
 import MyPicker from '@/views/layout/picker'
 import MyList from '@/views/layout/list'
 import {
-  reloadTitleMixin, getListMore
+  reloadTitleMixin, getListMore, pushRouter
 } from '@/utils/mixin'
 
 export default {
@@ -67,8 +67,15 @@ export default {
   methods: {
     ...mapActions({
       'HelpListAll': 'HelpListAll',
-      'HelpListColl': 'HelpListColl'
+      'HelpListColl': 'HelpListColl',
+      'HelpCollect': 'HignSchoolCollect'
     }),
+    handleCollect(id){
+      this.list = []
+      this.HelpCollect({id, type: 3}).then(res => {
+        if(!res.error) this.fetchData()
+      })
+    },
     getInputChange(e){
       this.list = []
       this.search.search = e.keyword
@@ -106,7 +113,7 @@ export default {
     this.docTitle = '招聘信息'
     this.fetchData()
   },
-  mixins: [reloadTitleMixin, getListMore]
+  mixins: [reloadTitleMixin, getListMore, pushRouter]
 }
 </script>
 <style lang="less" scoped>

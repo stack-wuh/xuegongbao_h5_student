@@ -30,7 +30,8 @@ import {
   Uploader,
   Switch,
   Tab,
-  Tabs
+  Tabs,
+  Progress
 } from 'vant'
 
 Vue.use(Tabbar)
@@ -54,6 +55,7 @@ Vue.use(Uploader)
 Vue.use(Switch)
 Vue.use(Tab)
 Vue.use(Tabs)
+Vue.use(Progress)
 
 window.$http = $http
 

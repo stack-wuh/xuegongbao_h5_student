@@ -6,7 +6,10 @@ export const reloadTitleMixin = {
   data(){
     return {
       docTitle: '学工宝学生端公众号',
-      defaultImg: require('@/assets/imgs/logo.png')
+      defaultImg: require('@/assets/imgs/logo.png'),
+
+      collectDefault: require('@/assets/imgs/icon-collected.png'),
+      collectActive: require('@/assets/imgs/icon-collected-s.png'),
     }
   },
   computed:{

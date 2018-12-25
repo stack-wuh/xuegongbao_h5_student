@@ -80,8 +80,17 @@ export default new Router({
           component: () => import ('@/components/jobManage/firend/index')
         },
         {
+          path: '/index/firend/detail',
+          component: () => import('@/components/jobManage/firend/detail')
+        },
+        {
           path: '/index/high/index',
           component: () => import ('@/components/jobManage/highschool/index')
+        },
+        {
+          path: '/index/high/detail',
+          alias:['/index/job/detail', '/index/help/detail'],
+          component: () => import('@/components/jobManage/highschool/detail')
         },
         {
           path: '/index/job/index',

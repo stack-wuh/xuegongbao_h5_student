@@ -8,7 +8,9 @@ import {
   applyList,
   voteList,
   postIdeaInfo,
-  postApplyInfo
+  postApplyInfo,
+  voteDetail,
+  voteAdd,
 }from '@/api/life.api.js'
 
 
@@ -157,7 +159,37 @@ const actions = {
         window.$router.push({path: '/life/apply/index'})
       }, 1000)
     }
+  },
 
+  /**
+   * [VoteDetail 评比评选 -- 提交结果详情]
+   * @method VoteDetail
+   * @param  {[type]}   context [description]
+   * @param  {[type]}   id      [description]
+   * @return {Promise}          [description]
+   */
+  async VoteDetail(context, {id}){
+    const response  = await voteDetail({data: {id}})
+
+    return response
+  },
+
+  /**
+   * [VoteAdd 评比评选 -- 提交结果]
+   * @method VoteAdd
+   * @param  {[type]}  context [description]
+   * @param  {[type]}  id      [description]
+   * @param  {[type]}  pid     [description]
+   * @return {Promise}         [description]
+   */
+  async VoteAdd(context, {id, pid}){
+    const response = await voteAdd({
+      data: {id, pid}
+    })
+    if(!response.error){
+      window.$router.push({path: '/life/pick/index'})
+    }
+    return response
   }
 }
 

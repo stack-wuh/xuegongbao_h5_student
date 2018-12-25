@@ -7,6 +7,16 @@ import {
   jobList,
   helpListAll,
   helpListColl,
+  firendDetail,
+  firendDetailFind,
+  hignSchoolDetail,
+  hignSchoolCollect,
+  hignSchoolPost,
+  jobCollect,
+  jobDetail,
+  jobPost,
+  helpDetail,
+  helpPost,
 }from '@/api/job.api.js'
 
 const state = {
@@ -146,7 +156,129 @@ const actions = {
       data
     })
     return response
+  },
+
+  /**
+   * [FirendDetail 企业校友 -- 行业动态详情]
+   * @method FirendDetail
+   * @param  {[type]}     context [description]
+   * @param  {[type]}     id      [description]
+   * @return {Promise}            [description]
+   */
+  async FirendDetail(context, {id}){
+    const response  = await firendDetail({
+      data: {
+        id
+      }
+    })
+
+    return response
+  },
+
+  /**
+   * [FirendDetailFind 企业校友 -- 校友名录]
+   * @method FirendDetailFind
+   * @param  {[type]}         context [description]
+   * @param  {[type]}         id      [description]
+   * @return {Promise}                [description]
+   */
+  async FirendDetailFind(context, {id}){
+    const response = await firendDetailFind({data: {id}})
+
+    return response
+  },
+  /**
+   * [getters 高校宣讲 -- 详情]
+   * @type {Object}
+   */
+  async HignSchoolDetail(context, {id}){
+    const response = await hignSchoolDetail({data: {id}})
+
+    return response
+  },
+
+  /**
+   * [HignSchoolCollect 高校宣讲 -- 收藏事件]
+   * @method HignSchoolCollect
+   * @param  {[type]}          context [description]
+   * @param  {[type]}          id      [description]
+   * @param  {[type]}          type    [description]
+   * @return {Promise}                 [description]
+   */
+  async HignSchoolCollect(context, {id, type}){
+    const response = await hignSchoolCollect({data: {id, type}})
+    return response
+  },
+
+  /**
+   * [HignSchoolPost 高校宣讲 -- ]
+   * @method HignSchoolPost
+   * @param  {[type]}       context [description]
+   * @param  {[type]}       form    [description]
+   * @param  {[type]}       class   [description]
+   * @param  {[type]}       phone   [description]
+   * @param  {[type]}       port    [description]
+   * @param  {[type]}       id      [description]
+   * @return {Promise}              [description]
+   */
+  async HignSchoolPost(context, {form: data}){
+    const response = await hignSchoolPost({data})
+
+    return response
+  },
+
+  /**
+   * [JobDetail 获取招聘信息的详情]
+   * @method JobDetail
+   * @param  {[type]}  context [description]
+   * @param  {[type]}  id      [description]
+   * @return {Promise}         [description]
+   */
+  async JobDetail(context, {id}){
+    const response  = await jobDetail({data: {id}})
+
+    return response
+  },
+
+  /**
+   * [JobPost 招聘信息 -- 报名]
+   * @method JobPost
+   * @param  {[type]}  context [description]
+   * @param  {[type]}  form    [description]
+   * @return {Promise}         [description]
+   */
+  async JobPost(context, {form: data}){
+    const response  = await jobPost({data})
+
+    return response
+  },
+
+  /**
+   * [HelpDetail 获取勤工助学详情]
+   * @method HelpDetail
+   * @param  {[type]}   context [description]
+   * @param  {[type]}   id      [description]
+   * @return {Promise}          [description]
+   */
+  async HelpDetail(context, {id}){
+    const response = await helpDetail({data: {id}})
+
+    return response
+  },
+
+  /**
+   * [HelpPost 勤工助学报名]
+   * @method HelpPost
+   * @param  {[type]}  context [description]
+   * @param  {[type]}  form    [description]
+   * @return {Promise}         [description]
+   */
+  async HelpPost(context, {form: data}){
+    const response = await helpPost({data})
+
+    return response
   }
+
 }
 
 const getters = {}

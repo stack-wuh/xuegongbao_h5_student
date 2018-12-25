@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <my-list-wrapper @canGoNext="canGoNext">
+    <my-list @scroll.native="handleScholl" :finishedText="isShowText">
       <ul slot="tab" class="header-wrapper">
         <li
             v-for="(item, index) in tabs" :key="index"
@@ -12,7 +12,7 @@
           v-for="(item, index) in list"
           :key="index" border>
             <img slot="left" class="margin-rg__20" :src=" item.img || defaultImg" alt="logo">
-            <section class="item-box">
+            <section @click="$push({path: '/index/firend/detail', query: {tag: search.category, id: item.tid || item.id}})" class="item-box">
               <p class="f16" style="font-size: .32rem;">{{item.title}}</p>
               <time class="f13">{{item.pubtime}}</time>
             </section>
@@ -20,7 +20,7 @@
         </my-list-item>
         <my-list-item v-else border>
           <img slot="left" :src="item.pic || defaultImg" alt="avatar">
-          <section class="item-box">
+          <section @click="$push({path: '/index/firend/detail', query: {tag: search.category, id: item.tid || item.id}})" class="item-box">
             <p class="f15 c333">{{item.name}}</p>
             <p class="flex flex-justify__between">
               <span class="f13">出生年月: {{item.birthday}}</span>
@@ -34,15 +34,16 @@
             </p>
           </section>
         </my-list-item>
-    </my-list-wrapper>
+    </my-list>
   </section>
 </template>
 <script>
 import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
 import MyListWrapper from '@/views/layout/listWrapper'
 import MyListItem from '@/views/layout/listItem'
+import MyList from '@/views/layout/list'
 import {
-  reloadTitleMixin
+  reloadTitleMixin, getListMore, pushRouter
 } from '@/utils/mixin'
 export default {
   props: {},
@@ -50,6 +51,7 @@ export default {
   components: {
     MyListItem,
     MyListWrapper,
+    MyList
   },
   computed: {
     ...mapState({
@@ -81,7 +83,8 @@ export default {
       search: {
         page: 1,
         category: '行业动态'
-      }
+      },
+      isShowText: '没有更多啦'
     }
   },
   methods: {
@@ -102,13 +105,14 @@ export default {
       this.CLEAR_FIRENDLIST()
       this.GetFirendList({url: item.url, search: this.search})
     },
-    canGoNext(){
-      let isShowMore = this.list.length === 10 ? true : false
+    getMore(e){
+      let isShowMore = this.list.length == 10 ? true : false
+      this.isShowText = this.list.length == 10 ? '正在加载更多' : '没有更多啦'
       if(isShowMore){
         this.search.page ++
         this.GetFirendList({url: this.tabs[this.curr].url, search: this.search})
       }
-    }
+    },
   },
   created(){
     this.GetFirendList({search: this.search})
@@ -116,7 +120,7 @@ export default {
   destroyed(){
     this.CLEAR_FIRENDLIST()
   },
-  mixins: [reloadTitleMixin]
+  mixins: [reloadTitleMixin, getListMore, pushRouter]
 }
 </script>
 <style lang="less" scoped>
@@ -132,7 +136,7 @@ export default {
     align-items: center;
     justify-content: space-around;
     height: .8rem;
-    width: inherit;
+    width: 100vw;
     background-color: @base-color;
     color: rgba(255,255,255,.5);
 

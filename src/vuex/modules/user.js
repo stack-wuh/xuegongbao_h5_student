@@ -1,7 +1,8 @@
 import {
   signin,
   getuserinfo,
-  signout
+  signout,
+  reLogin,
 } from '@/api/user.api.js'
 import {
   setStorageHandle
@@ -68,6 +69,11 @@ const actions = {
     }catch(err){
       throw new Error(err)
     }
+  },
+
+  async ReLogin(context){
+    const response  = await reLogin()
+    setStorageHandle('myInfo', response.info)
   }
 }
 

@@ -23,3 +23,7 @@ export const signout = () =>
   $http.post({
     url: '/user/logout'
   }).catch(err => _catch(err))
+
+export const reLogin = () => $http.post({
+  url: '/user/relogin',
+}).catch(_catch)

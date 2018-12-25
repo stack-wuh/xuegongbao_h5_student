@@ -3,7 +3,7 @@
     <my-list @scroll.native="handleScholl" :finishedText="isShowText">
       <my-search @getInputChange="handleInputChange" background slot="search"> </my-search>
       <my-list-item v-for="(item, index) in list" :key="index">
-        <section  @click="$push({path: '/life/pick/detail', query: {id: item.id}})" class="item-content">
+        <section  @click="$push({path: '/life/pick/detail', query: {id: item.id, title: item.title, desc: item.descript}})" class="item-content">
           <p class="item-content__title">{{item.title || '暂无'}}</p>
           <p class="item-content__time">投票发起人: {{item.name}}</p>
           <p class="item-content__time">投票截止时间: {{item.endtime || '暂无'}}</p>
