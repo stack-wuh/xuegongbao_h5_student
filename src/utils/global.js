@@ -44,7 +44,7 @@ export const _catch = (err) => {
 export const formatTime = (date, time = false) => {
   let year = date.getFullYear(),
       month = date.getMonth() + 1,
-      day = date.getDay(),
+      day = date.getDate(),
       hours = date.getHours(),
       minutes = date.getMinutes(),
       seconds = date.getSeconds()

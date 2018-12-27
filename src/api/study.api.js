@@ -74,3 +74,30 @@ export const quesPost = ({
   url: '/Questionnaire/answerQuestionnaire',
   data
 }).catch(_catch)
+
+export const examDetail = ({
+  id
+}) => $http.post({
+  url: '/keyan/sourceDetail',
+  data: {id}
+})
+
+export const chairDetail = ({
+  id
+}) => $http.post({
+  url: '/chair/detail',
+  data: {id}
+})
+export const chairApply = ({
+  id
+}) => $http.post({
+  url: '/chair/apply',
+  data: {id}
+})
+
+export const chairUnApply = ({
+  id
+}) => $http.post({
+  url: '/chair/applyCancel',
+  data: {id}
+})

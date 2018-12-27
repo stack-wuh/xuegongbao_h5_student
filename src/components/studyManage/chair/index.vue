@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <my-list-wrapper @canGoNext="canGoNext">
+    <my-list @scroll.native="handleSchool" :finishedText="isShowText">
       <section class="header">
         <my-search
           @getInputChange="handleInputChange"
@@ -9,8 +9,10 @@
         ></my-search>
       </section>
       <my-list-item v-for="(item, index) in list" >
-        <section class="list-box flex flex-flow__col">
-          <p class="box-title__text">{{item.theme}}</p>
+        <section @click="$push({path: '/index/chair/detail', query: {tag: query.tag, id: item.id}})" class="list-box flex flex-flow__col">
+          <p class="box-title__text">{{item.theme}}
+            <span class="title__tips" v-if="item.has_apply">已报名</span>
+          </p>
           <p class="box-time__text">报名人数: {{item.apply_num}}</p>
           <p class="box-time__text text-over__cols">{{item.intro}}</p>
           <time class="box-time__text flex">
@@ -19,7 +21,7 @@
             <img src="../../../assets/imgs/icon-pos.png" alt="icon__goast">{{item.address}}</time>
         </section>
       </my-list-item>
-    </my-list-wrapper>
+    </my-list>
   </section>
 </template>
 <script>
@@ -27,6 +29,10 @@ import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
 import MyListWrapper from '@/views/layout/listWrapper'
 import MyListItem from '@/views/layout/listItem'
 import MySearch from '@/views/layout/search'
+import MyList from '@/views/layout/list'
+import {
+  reloadTitleMixin, pushRouter, getListMore
+} from '@/utils/mixin'
 export default {
   props: {},
   name: '',
@@ -34,10 +40,10 @@ export default {
     MyListWrapper,
     MyListItem,
     MySearch,
+    MyList
   },
   computed: {
     ...mapState({
-      list: state => state.Study.chairList
     }),
   },
   data(){
@@ -46,6 +52,9 @@ export default {
         page: 1,
         search: ''
       },
+      isShowText: '没有更多啦',
+      isShowMore: false,
+      list: [],
     }
   },
   methods: {
@@ -63,9 +72,10 @@ export default {
      * @return {[type]}            [description]
      */
     handleInputChange(e){
-      this.CLEAR_CHAIRLIST()
+      this.list = []
       this.search.search = e.keyword
-      this.getChairList({search: this.search})
+      this.search.page = 1
+      this.fetchData()
     },
     /**
      * [canGoNext 翻页]
@@ -73,20 +83,28 @@ export default {
      * @param  {[type]}  e [description]
      * @return {[type]}    [description]
      */
-    canGoNext(e){
-      let isShowMore = this.list.length === 10 ? true : false
-      if(isShowMore){
+    getMore(e){
+      if(this.isShowMore){
         this.search.page ++
-        this.getChairList({search: this.search})
+        this.fetchData()
       }
+    },
+    fetchData(){
+      this.getChairList({search: this.search}).then(res => {
+        this.list = this.list.concat(res)
+        this.isShowMore = res.length == 10 ? true: false
+        this.isShowText = res.length == 10 ? '正在加载更多' : '没有更多啦'
+      })
     }
   },
   created(){
-    this.getChairList({search: this.search})
+    this.docTitle = '讲座报告'
+    this.fetchData()
   },
   destroyed(){
     this.CLEAR_CHAIRLIST()
-  }
+  },
+  mixins: [reloadTitleMixin, pushRouter, getListMore]
 }
 </script>
 <style lang="less" scoped>
@@ -96,7 +114,12 @@ export default {
   height: inherit;
   background-color: @base-background;
   overflow-y: scroll;
-
+  .title__tips{
+    margin-left: 10vw;
+    border:1px solid @base-color;
+    color: @base-color;
+    font-size: .28rem;
+  }
   img[alt="logo"]{
     width: 1.2rem;
     height: 1.2rem;

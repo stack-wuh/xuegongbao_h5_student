@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <my-list-wrapper @canGoNext="canGoNext">
+    <my-list @scroll.native="handleScholl" :finishedText="isShowText">
       <section class="header">
         <my-search
           @getInputChange="handleInputChange"
@@ -8,15 +8,16 @@
           slot="search"
         ></my-search>
       </section>
+      <section style="height: 1rem;"></section>
       <my-list-item v-for="(item, index) in list" >
         <img slot="left" src="../../../assets/imgs/logo.png" alt="logo">
-        <section class="list-box flex flex-flow__col">
-          <p class="box-title__text">测试资料</p>
-          <p class="box-time__text">测试用</p>
-          <time class="box-time__text">2018-12-10 10:00:00</time>
+        <section @click="$push({path: '/index/exam/detail', query: {tag: query.tag, id: item.id}})" class="list-box flex flex-flow__col">
+          <p class="box-title__text">{{item.title}}</p>
+          <p class="box-time__text">{{item.content}}</p>
+          <time class="box-time__text">{{item.addtime}}</time>
         </section>
       </my-list-item>
-    </my-list-wrapper>
+    </my-list>
   </section>
 </template>
 <script>
@@ -24,6 +25,8 @@ import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
 import MyListWrapper from '@/views/layout/listWrapper'
 import MyListItem from '@/views/layout/listItem'
 import MySearch from '@/views/layout/search'
+import MyList from '@/views/layout/list'
+import {reloadTitleMixin, pushRouter, getListMore} from '@/utils/mixin'
 export default {
   props: {},
   name: '',
@@ -31,10 +34,10 @@ export default {
     MyListWrapper,
     MyListItem,
     MySearch,
+    MyList,
   },
   computed: {
     ...mapState({
-      list: state => state.Study.examList
     }),
   },
   data(){
@@ -43,6 +46,9 @@ export default {
         page: 1,
         search: ''
       },
+      list: [],
+      isShowMore: false,
+      isShowText: '没有更多啦'
     }
   },
   methods: {
@@ -62,7 +68,8 @@ export default {
     handleInputChange(e){
       this.CLEAR_EXAMLIST()
       this.search.search = e.keyword
-      this.getExamList({search: this.search})
+      this.search.page = 1
+      this.fetchData()
     },
     /**
      * [canGoNext 翻页]
@@ -70,17 +77,25 @@ export default {
      * @param  {[type]}  e [description]
      * @return {[type]}    [description]
      */
-    canGoNext(e){
-      let isShowMore = this.list.length === 10 ? true : false
-      if(isShowMore){
+    getMore(e){
+      if(this.isShowMore){
         this.search.page ++
-        this.getExamList({search: this.search})
+        this.fetchData()
       }
+    },
+    fetchData(){
+      this.getExamList({search: this.search}).then(res => {
+        this.list = this.list.concat(res.data)
+        this.isShowMore = res.data.length == 10 ? true : false
+        this.isShowText = res.length == 10 ? '正在加载更多' : '没有更多啦'
+      })
     }
   },
   created(){
-    this.getExamList({search: this.search})
+    this.docTitle = '学习考试'
+    this.fetchData()
   },
+  mixins:[reloadTitleMixin, pushRouter, getListMore],
   destroyed(){
     this.CLEAR_EXAMLIST()
   }
@@ -93,6 +108,13 @@ export default {
   height: inherit;
   background-color: @base-background;
   overflow-y: scroll;
+
+  .header{
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100vw;
+  }
 
   img[alt="logo"]{
     width: 1.2rem;

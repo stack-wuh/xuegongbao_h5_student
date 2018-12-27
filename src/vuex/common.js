@@ -1,5 +1,6 @@
 import {
   categoryList,
+  imageUpload,
 } from '@/api/common.api.js'
 
 const state = {
@@ -16,6 +17,19 @@ const actions = {
   async getCategoryList(context){
     const response = await categoryList()
     context.commit('SET_CATEGORYLIST', response)
+    return response
+  },
+
+  /**
+   * [PostImageUploader 图片上传]
+   * @method PostImageUploader
+   * @param  {[type]}          context [description]
+   * @return {Promise}                 [description]
+   */
+  async PostImageUploader(context, {data}){
+    console.log(data)
+    const response = await imageUpload({data})
+
     return response
   }
 }

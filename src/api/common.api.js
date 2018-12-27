@@ -12,3 +12,11 @@ import {
 export const categoryList = () => $http.post({
   url: '/keyan/category'
 }).catch(err => _catch(err))
+
+
+export const imageUpload = ({
+  data
+}) => $http.post({
+  url: '/upload/uploadImg',
+  data
+}).catch(_catch)

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import $http from '@/utils/axios'
+import Axios from 'axios'
 
 import 'vant/lib/index.css'
 import '@/assets/style/base.less'
@@ -73,5 +74,6 @@ Vue.prototype._getItem = getStorageHandle
 
 
 window.rootPath = '/api'
+window.axois = Axios
 
 window.$bus = new Vue()

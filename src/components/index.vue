@@ -38,10 +38,12 @@ const menuList = [
       {
         name: '请假申请',
         icon: require('@/assets/imgs/icon-12.png'),
+        path: '/index/leave/index'
       },
       {
         name: '考勤评定',
         icon: require('@/assets/imgs/icon-13.png'),
+        path: '/index/check/index'
       }
     ]
   },

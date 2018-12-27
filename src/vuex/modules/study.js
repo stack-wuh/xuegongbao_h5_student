@@ -9,6 +9,10 @@ import {
   enlistAdd,
   quesDetail,
   quesPost,
+  examDetail,
+  chairDetail,
+  chairApply,
+  chairUnApply,
 } from '@/api/study.api.js'
 const state = {
   gameList: [], // 科研赛事数据列表
@@ -171,6 +175,14 @@ const actions = {
     return response
   },
 
+  /**
+   * [QuesPost 填写问卷调查]
+   * @method QuesPost
+   * @param  {[type]}  context [description]
+   * @param  {[type]}  data    [description]
+   * @param  {[type]}  id      [description]
+   * @return {Promise}         [description]
+   */
   async QuesPost(context, {data, id}){
     const response = await quesPost({
       data: {
@@ -179,6 +191,54 @@ const actions = {
       }
     })
     if(!response.error) window.$router.go(-1)
+    return response
+  },
+
+  /**
+   * [GetExamDetail 学习考试-- 获取学习考试详情]
+   * @method GetExamDetail
+   * @param  {[type]}      context [description]
+   * @param  {[type]}      id      [description]
+   * @return {Promise}             [description]
+   */
+  async GetExamDetail(context, {id}){
+    const response = await examDetail({id})
+    return response
+  },
+
+  /**
+   * [GetChairDetail 讲座报告 -- 详情]
+   * @method GetChairDetail
+   * @param  {[type]}       context [description]
+   * @param  {[type]}       id      [description]
+   * @return {Promise}              [description]
+   */
+  async GetChairDetail(context, {id}){
+    const response = await chairDetail({id})
+    return response
+  },
+
+  /**
+   * [PostChairApply 讲座报告 -- 报名]
+   * @method PostChairApply
+   * @param  {[type]}       context [description]
+   * @param  {[type]}       id      [description]
+   * @return {Promise}              [description]
+   */
+  async PostChairApply(context, {id}){
+    const response = await chairApply({id})
+    return response
+  },
+
+  /**
+   * [PostChairUnApply 讲座报告 -- 取消报名]
+   * @method PostChairUnApply
+   * @param  {[type]}         context [description]
+   * @param  {[type]}         id      [description]
+   * @return {Promise}                [description]
+   */
+  async PostChairUnApply(context, {id}){
+    const response = await chairUnApply({id})
     return response
   }
 }

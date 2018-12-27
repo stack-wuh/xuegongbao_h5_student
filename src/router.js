@@ -80,8 +80,16 @@ export default new Router({
           component: () => import('@/components/studyManage/exam/index')
         },
         {
+          path: '/index/exam/detail',
+          component: () => import('@/components/studyManage/exam/detail')
+        },
+        {
           path: '/index/chair/index',
           component: () => import('@/components/studyManage/chair/index')
+        },
+        {
+          path: '/index/chair/detail',
+          component: () => import('@/components/studyManage/chair/detail')
         },
         {
           path: '/index/firend/index',
@@ -133,6 +141,14 @@ export default new Router({
         {
           path: '/life/pick/detail',
           component: () => import('@/components/lifeManage/pick/detail')
+        },
+        {
+          path: '/index/leave/index',
+          component: () => import('@/components/attendanceManage/leave/index')
+        },
+        {
+          path: '/index/check/index',
+          component: () => import('@/components/attendanceManage/check/index')
         },
 
         {
