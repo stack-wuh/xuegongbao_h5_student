@@ -103,7 +103,10 @@ export default {
     ...mapActions({
       'handleSaveForm': 'handleSaveForm',
       'PostIdeaInfo': 'PostIdeaInfo',
-      'PostApplyInfo': 'PostApplyInfo'
+      'PostApplyInfo': 'PostApplyInfo',
+      'getCategoryList':'getCategoryList',
+      'handleSaveFormByField': 'handleSaveFormByField',
+      'PostEnlistAdd': 'PostEnlistAdd'
     }),
     /**
      * [handleToggleupop description]
@@ -132,19 +135,31 @@ export default {
       this.handleSaveForm({form})
     },
     handleClick(){
+      let result = true
+      let temp_list = this.formLists(this.search).list.filter(ii => ii.isRequired).map(ss => ss.field)
+      temp_list.forEach(ii => {
+        if(typeof this.form[ii] == 'boolean') this.form[ii] = ~~this.form[ii]
+        if(!this.form[ii]) result = false
+      })
+      !result &&  this.$toast({type: 3, msg: '请编辑必填项后提交'})
+      if(!result) return
       let actions = new Map([
         [{name: '意见征集'}, 'PostIdeaInfo'],
-        [{name: '资助申请'}, 'PostApplyInfo']
+        [{name: '资助申请'}, 'PostApplyInfo'],
+        [{name: '科研赛事招募令'}, 'PostEnlistAdd']
       ])
       let action = [...actions].filter(([key, val]) => key.name == this.query.name)
       action.forEach(([key, val]) => {
         this[val].call(this, {form: this.form})
       })
-      console.log('this is click submit', this.form)
+      // console.log('this is click submit', this.form)
     }
   },
   created() {
     this.docTitle = this.formLists(this.search).docTitle || '学工宝学生端公众号'
+    switch(this.query.name){
+      case '科研赛事招募令': this.getCategoryList()
+    }
   },
   mixins: [reloadTitleMixin]
 }
@@ -153,6 +168,9 @@ export default {
 .form-wrapper{
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding-bottom: 1rem;
   .btn-area{
     display: flex;
     justify-content: center;

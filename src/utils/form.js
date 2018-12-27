@@ -276,5 +276,63 @@ export const forms = [
         field: 'reason'
       }
     ],
+  },
+  {
+    name: '科研赛事招募令',
+    desc: '科研赛事招募令提交表单',
+    picks: ['科研赛事招募令'],
+    types: 1,
+    docTitle: '发布资助申请',
+    list: [
+      {
+        label: '项目名称',
+        type: 'default',
+        field: 'name',
+        isRequired: true,
+      },
+      {
+        label: '项目类别',
+        type: 'select',
+        field: 'category',
+        list: [],
+        isRequired: true,
+      },
+      {
+        label: '招募人数',
+        type: 'default',
+        field: 'num',
+        isRequired: true,
+      },
+      {
+        label: '联系方式',
+        type: 'default',
+        field: 'contact',
+        isRequired: true,
+      },
+      {
+        label: '是否需要个人简历',
+        type: 'switch',
+        field: 'resume',
+        isRequired: false,
+      },
+      {
+        label: '截止时间',
+        type: 'date',
+        field: 'endtime',
+        isRequired: false,
+      },
+      {
+        label: '项目介绍',
+        type: 'textarea',
+        field: 'intro',
+        isRequired: false,
+      },
+      {
+        label: '招募要求',
+        type: 'textarea',
+        field: 'command',
+        isRequired: false,
+      }
+    ],
   }
 ]

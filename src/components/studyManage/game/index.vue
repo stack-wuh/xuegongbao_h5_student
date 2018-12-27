@@ -1,18 +1,19 @@
 <template>
   <section class="content-wrapper">
-    <my-list-wrapper @canGoNext="canGoNext" >
+    <my-list @scroll.native="handleScholl" :finishedText="isShowText" >
       <section class="header-wrapper">
-        <my-tab @lisenterIndex='lisenterIndex' slot="tab"></my-tab>
+        <my-tab @lisenterIndex='lisenterIndex' :data="tabList" slot="tab"></my-tab>
         <my-search @getInputChange="handleChange" slot="search">
           <my-picker @emitterPick="handlePick" :data="category" valueKey="label" slot="left"></my-picker>
+          <img @click="$push({path: '/base/form', query: {name: '科研赛事招募令'}})" v-if="currTabIndex == 1" slot="right" src="../../../assets/imgs/icon-edit-green.png" alt="edit">
         </my-search>
       </section>
       <section style="height: 1.6rem;"></section>
       <my-list-item class="my-list-item" v-for="(item, index) in list" :key="index" border >
         <div :class="bgColor(item.category)" slot="left" class="left-wrapper">
-          {{item.category}}
+          {{item.category || '暂无'}}
         </div>
-        <div class="center-wrapper">
+        <div @click="$push({path: '/index/game/detail', query: {tag: query.tag, tab: tabList[currTabIndex].name, id: item.id}})" class="center-wrapper">
           <p>{{currTabIndex == 0 ? item.title : item.name}}</p>
           <div class="flex flex-justify__between">
             <p>
@@ -30,28 +31,28 @@
           </div>
         </div>
       </my-list-item>
-    </my-list-wrapper>
+    </my-list>
   </section>
 </template>
 <script>
 import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
-import MyListWrapper from '@/views/layout/listWrapper'
 import MyListItem from '@/views/layout/listItem'
 import MyTab from '@/views/layout/tab'
 import MySearch from '@/views/layout/search'
 import MyPicker from '@/views/layout/picker'
+import MyList from '@/views/layout/list'
 import {
-  changeTabCurr
+  changeTabCurr, reloadTitleMixin, getListMore, pushRouter
 } from '@/utils/mixin'
 export default {
   props: {},
   name: '',
   components: {
-    MyListWrapper,
     MyListItem,
     MyTab,
     MySearch,
-    MyPicker
+    MyPicker,
+    MyList,
   },
   computed: {
     ...mapState({
@@ -69,6 +70,17 @@ export default {
         search: ''
       },
       isShowMore: false,
+      isShowText: '没有更多啦',
+      tabList: [
+        {
+          name: '通知',
+          value: 0
+        },
+        {
+          name: '招募令',
+          value: 1
+        }
+      ],
     }
   },
   methods: {
@@ -98,6 +110,7 @@ export default {
      * @return {[type]}        [description]
      */
     lisenterIndex(e){
+      this.search.page = 1
       this.currTabIndex = e.index
       this.CLEAR_GAMELIST()
       this.getList({search: this.search, currIndex: e.index})
@@ -140,7 +153,7 @@ export default {
      * @param  {[type]}  e [description]
      * @return {[type]}    [description]
      */
-    canGoNext(e){
+    getMore(e){
       let isShowMore = this.list.length === 10 ? true : false
       if(isShowMore){
         this.search.page ++
@@ -155,7 +168,7 @@ export default {
   destroyed(){
     this.CLEAR_GAMELIST()
   },
-  mixins: [changeTabCurr]
+  mixins: [changeTabCurr, reloadTitleMixin, getListMore, pushRouter]
 }
 </script>
 <style lang="less" scoped>
@@ -180,30 +193,5 @@ export default {
       font-size: .28rem;
     }
   }
-
-.yellow{
-  color:#F5A623;
-  border-right:5rpx solid #F5A623;
-}
-.lightgreen{
-  color: #7ED321;
-  border-right:5rpx soild #7ED321;
-}
-.default{
-  color:#00998D;
-  border-right:5rpx solid #00998d;
-}
-.error{
-  color: #FF6B64;
-  border-right:5rpx solid #FF6B64;
-}
-.other{
-  color: #1C4E69;
-  border-right: 5rpx solid #1C4E69;
-}
-.ending{
-  color:#ccc;
-  padding-top:20rpx;
-}
 }
 </style>

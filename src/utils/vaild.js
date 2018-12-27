@@ -24,7 +24,7 @@ export const validPhone = value => {
 }
 
 export const validDate = val => {
-  const picks = ['time', 'datetime', 'date']
+  const picks = ['time', 'datetime', 'date', 'endtime']
   if(!picks.includes(val)) return null
   return val
 }

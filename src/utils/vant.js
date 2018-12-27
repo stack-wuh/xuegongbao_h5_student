@@ -31,7 +31,9 @@ import {
   Switch,
   Tab,
   Tabs,
-  Progress
+  Progress,
+  RadioGroup,
+  Radio,
 } from 'vant'
 
 Vue.use(Tabbar)
@@ -56,6 +58,8 @@ Vue.use(Switch)
 Vue.use(Tab)
 Vue.use(Tabs)
 Vue.use(Progress)
+Vue.use(RadioGroup)
+Vue.use(Radio)
 
 window.$http = $http
 

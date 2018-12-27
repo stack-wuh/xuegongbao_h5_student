@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <my-list-wrapper @canGoNext="canGoNext">
+    <my-list @scroll.native="handleSchool" :finishedText="isShowText">
       <section class="header">
         <my-search
           @getInputChange="handleInputChange"
@@ -9,21 +9,25 @@
         ></my-search>
       </section>
       <my-list-item v-for="(item, index) in list" >
-        <section class="item__box flex flex-flow__col" slot="left">
+        <section @click="$push({path: '/index/question/detail', query: {tag: query.tag, id: item.id}})" class="item__box flex flex-flow__col" slot="left">
           <p class="item-title__text">{{item.title}}</p>
           <p class="item-time__text">{{item.name}}</p>
           <time class="item-time__text">{{item.sub_time}}</time>
         </section>
         <img slot="right" class="icon-right" src="../../../assets/imgs/arrow-right-green.png" alt="icon">
       </my-list-item>
-    </my-list-wrapper>
+    </my-list>
   </section>
 </template>
 <script>
 import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
 import MyListWrapper from '@/views/layout/listWrapper'
 import MyListItem from '@/views/layout/listItem'
+import MyList from '@/views/layout/list'
 import MySearch from '@/views/layout/search'
+import {
+  reloadTitleMixin, pushRouter, getListMore
+} from '@/utils/mixin'
 export default {
   props: {},
   name: '',
@@ -31,6 +35,7 @@ export default {
     MyListWrapper,
     MyListItem,
     MySearch,
+    MyList,
   },
   computed: {
     ...mapState({
@@ -43,6 +48,7 @@ export default {
         page: 1
       },
       isShowMore: false,
+      isShowText: '没有更多啦'
     }
   },
   methods: {
@@ -64,17 +70,19 @@ export default {
       this.search.search = e.keyword
       this.getQuesList({search: this.search})
     },
-    canGoNext(e){
-      let isShowMore = this.list.length === 10 ? true : false
-      if(isShowMore){
+    getMore(){
+      this.isShowMore = this.list.length == 10 ? true : false
+      if(this.isShowMore){
         this.search.page ++
         this.getQuesList({search: this.search})
       }
-    }
+    },
   },
   created(){
+    this.docTitle = '问卷调查'
     this.getQuesList({search: this.search})
   },
+  mixins:[reloadTitleMixin, pushRouter, getListMore],
   destroyed(){
     this.CLEAR_QUESLIST()
   }

@@ -41,14 +41,18 @@ export const _catch = (err) => {
   action.forEach(([key, value]) => _toast(value))
 }
 
-export const formatTime = date => {
+export const formatTime = (date, time = false) => {
   let year = date.getFullYear(),
       month = date.getMonth() + 1,
       day = date.getDay(),
       hours = date.getHours(),
       minutes = date.getMinutes(),
       seconds = date.getSeconds()
-  return  [year, month, day].map(timeToString).join('-') + ' ' + [hours, minutes, seconds].map(timeToString).join(':')
+  if(time){
+    return  [year, month, day].map(timeToString).join('-') + ' ' + [hours, minutes, seconds].map(timeToString).join(':')
+  }else {
+    return [year, month, day].map(timeToString).join('-')
+  }
 }
 
 const timeToString = val => {

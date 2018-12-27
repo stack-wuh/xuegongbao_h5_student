@@ -31,3 +31,46 @@ export const chairList = ({
   url: '/chair/query',
   data
 }).catch(err => _catch(err))
+
+
+export const noticeDetail = ({
+  id
+}) => $http.post({
+  url: '/keyan/noticeDetail',
+  data: {id}
+}).catch(_catch)
+
+export const noticePost = ({
+  data
+}) => $http.post({
+  url: '/job/keyanApply',
+  data
+}).catch(_catch)
+
+export const enlistDetail = ({
+  id
+}) => $http.post({
+  url: '/keyan/enlistDetail',
+  data: {id}
+})
+
+export const enlistAdd = ({
+  data
+}) => $http.post({
+  url: '/keyan/enlistAdd',
+  data
+})
+
+export const quesDetail = ({
+  data
+}) => $http.post({
+  url: '/Questionnaire/detailQuestionnaire',
+  data
+}).catch(_catch)
+
+export const quesPost = ({
+  data
+}) => $http.post({
+  url: '/Questionnaire/answerQuestionnaire',
+  data
+}).catch(_catch)

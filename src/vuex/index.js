@@ -28,7 +28,6 @@ const mutations = {
   setFormDateByField(state, form){
     state.form[form.field] = form.label
     state.form[form.child] = form.value
-    console.log(form, 'this is form')
   },
 }
 
@@ -46,7 +45,8 @@ const actions = {
 
   handleSaveFormByField({commit}, {form}){
     commit('setFormDateByField', form)
-  }
+  },
+
 
 }
 
@@ -57,8 +57,18 @@ const getters = {
    * @param  {[type]}    getters [description]
    * @return {[type]}            [description]
    */
-  getFormList: getters => (pick = {}) => {
-    return forms.find(item => item.picks.includes(pick.path || pick.name))
+  getFormList: (context, rootGetters) => (pick = {}) => {
+    let _obj = forms.find(item => item.picks.includes(pick.path || pick.name))
+    if(pick.name == '科研赛事招募令'){
+      _obj.list.map(ii => {
+        if(ii.label == '项目类别'){
+          ii.list = context.Common && context.Common.gameCategoryList.map(ii => {
+              return ii = {label: ii.name, value: ii.name}
+          })
+        }
+      })
+    }
+    return _obj
   },
 
   /**
