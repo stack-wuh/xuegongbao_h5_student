@@ -62,7 +62,7 @@ export default {
     },
     onConfirm(e){
       this.isShowPopup = false
-      this.pickText = e[this.valueKey]
+      this.pickText = e[this.valueKey] || e
       this.$emit('emitterPick', {index: this.index, data: e})
       console.log(e, 'this is confirm emitter')
     }

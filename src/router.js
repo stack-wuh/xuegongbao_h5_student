@@ -30,9 +30,13 @@ export default new Router({
           component: () => import ('@/components/messageManage/index'),
         },
         {
-          path: '/message/info',
+          path: '/message/detail',
           name: 'messageDesc',
           component: () => import('@/components/messageManage/detail')
+        },
+        {
+          path: '/message/list',
+          component: () => import('@/components/messageManage/list')
         },
         {
           path: '/center',

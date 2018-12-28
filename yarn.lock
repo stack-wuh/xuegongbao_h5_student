@@ -7170,6 +7170,12 @@ vue-eslint-parser@^4.0.2:
     esquery "^1.0.1"
     lodash "^4.17.11"
 
+vue-event-calendar@^1.5.2:
+  version "1.5.2"
+  resolved "http://registry.npm.taobao.org/vue-event-calendar/download/vue-event-calendar-1.5.2.tgz#4ed7e85073aa203558e931e04e0cd832e9db0b95"
+  dependencies:
+    vue "^2.1.8"
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.1"
   resolved "http://registry.npm.taobao.org/vue-hot-reload-api/download/vue-hot-reload-api-2.3.1.tgz#b2d3d95402a811602380783ea4f566eb875569a2"
@@ -7209,6 +7215,10 @@ vue-template-compiler@^2.5.17:
 vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "http://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
+
+vue@^2.1.8:
+  version "2.5.21"
+  resolved "http://registry.npm.taobao.org/vue/download/vue-2.5.21.tgz#3d33dcd03bb813912ce894a8303ab553699c4a85"
 
 vue@^2.5.17:
   version "2.5.17"

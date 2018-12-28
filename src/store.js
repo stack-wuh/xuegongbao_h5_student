@@ -11,6 +11,7 @@ import Study from '@/vuex/modules/study'
 import Job from '@/vuex/modules/job'
 import Life from '@/vuex/modules/life'
 import Attendance from '@/vuex/modules/attendance'
+import Message from '@/vuex/modules/message'
 
 export default new Vuex.Store({
   ...Index,
@@ -21,5 +22,6 @@ export default new Vuex.Store({
     Job,
     Life,
     Attendance,
+    Message,
   }
 })

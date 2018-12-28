@@ -1,141 +1,142 @@
 <template>
-  <section class="wrapper content-wrapper">
-    <header class="header">
-      <span @click="isShowPicker = true">全部 <img class='arrow-white-down' src="../../assets/imgs/arrow-white-down.png" alt="arrow-white-down" /></span>
-      <span class="flex-empty"></span>
-      <img class="icon-search margin-rg__15" src="../../assets/imgs/icon-search.png" alt="icon-search">
-      <img class="icon-calendar" src="../../assets/imgs/icon-calendar.png" alt="icon-calendar">
-    </header>
-    <div style="height: .8rem;"></div>
-    <van-list v-model="isLoading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load = 'onLoad'>
-      <div class="list-item" @click="$router.push({path: '/message/info', query: {id: item}})" v-for="(item, index) in 4" :key="index" >
-        <p>
-          <span class="item-tips">普通消息</span>来自张小二
-        </p>
-        <p class="item__title text-over">[主题]测试</p>
-        <p class="item__desc">测试</p>
-        <p class="item__info flex flex-justify__between">
-          <time>2018年12月06日 14:50分</time>
-          <span>共497人, 0人已收到</span>
-        </p>
-
-        <div :class="['list-item__tips', item % 2 ? 'list-item__tips-active' : 'list-item__tips-normal']">
-          已结束
-        </div>
-      </div>
-    </van-list>
-
+  <section class="wrapper content1-wrapper">
+    <my-list @scroll.native="handleScholl" :finishedText="isShowText">
+      <my-search @getInputChange="handleInput" class="my-search" background>
+        <my-picker @emitterPick="handlePick" :data="['全部', '普通消息', '会议消息']" slot="left" style="background-color: inherit;"></my-picker>
+        <img class="icon-calendar" slot="right" src="../../assets/imgs/icon-calendar.png" alt="icon-calendar">
+      </my-search>
+      <section style="height: .8rem;"></section>
+      <my-list-item v-for="(item, index) in list" :key="index" border>
+        <section @click="$push({path: '/message/detail', query: {id: item.id}})" class="list-items">
+            <p class="item-header">
+              <span class="f14 margin-rg__10 item-type">{{item.classify}}</span>
+              <span class="f14">来自于{{item.name}}</span>
+              <span class="flex-empty"></span>
+              <span class="f14 item-tips">{{item.status == 1 ? '已结束' : '待确认'}}</span>
+            </p>
+            <p class="f16 margin-bm__5">[主题]{{item.title}}</p>
+            <p class="f13 margin-bm__5">
+              {{item.content}}
+            </p>
+            <p class="flex flex-justify__between">
+              <time class="f13">{{item.add_time}}</time>
+              <span class="f13">共{{item.totals}}人, {{item.receive}}人已收到</span>
+            </p>
+          </section>
+      </my-list-item>
+    </my-list>
     <my-tabbar />
-    <van-popup
-      v-model="isShowPicker"
-      position="bottom" >
-        <van-picker
-          show-toolbar
-          :columns = "[1, 2, 3, 4]"
-          @confirm = "isShowPicker = false"
-          @cancel = "isShowPicker = false" ></van-picker>
-    </van-popup>
   </section>
 </template>
 <script>
+import {mapActions} from 'vuex'
 import MyTabbar from '@/components/common/tabbar'
-import {reloadTitleMixin} from '@/utils/mixin'
+import MyList from '@/views/layout/list'
+import MyListItem from '@/views/layout/listItem'
+import MySearch from '@/views/layout/search'
+import MyPicker from '@/views/layout/picker'
+import {
+  reloadTitleMixin, pushRouter, getListMore
+} from '@/utils/mixin'
 export default {
   props: {},
   name: '',
   components: {
-    MyTabbar
+    MyTabbar,
+    MyListItem,
+    MyList,
+    MySearch,
+    MyPicker,
   },
   data(){
     return {
       docTitle: '消息中心',
       isShowPicker: false, // 展示底层picker
-      isLoading: false, //loading状态
-      finished: false , //是否加载更多
 
       list: [],
+
+      isShowText: '没有更多啦',
+      isShowMore: false,
+      search: {
+        page: 1,
+        keyword: '',
+        category: '全部'
+      },
+      currIndex: -1,
+
     }
   },
   methods: {
-    onLoad(){
-      console.log('is attach bottom')
-      setTimeout(() => {
-        for(let i =0; i < 20; i++){
-          this.list.push(this.list.length+1)
-        }
-        this.isLoading = false
-        if(this.list.length >= 40){
-          this.finished = true
-        }
-      }, 500)
+    ...mapActions({
+      'GetMessageList': 'GetMessageList'
+    }),
+    fetchData(){
+      this.GetMessageList({search: this.search}).then(res => {
+        this.list = this.list.concat(res)
+        this.isShowMore = res.length == 10 ? true : false
+        this.isShowText = res.length == 10 ? '正在加载更多' : '没有更多啦'
+      })
+    },
+    getMore(){
+      if(this.isShowMore){
+        this.search.page ++
+        this.fetchData()
+      }
+    },
+    handlePick(e){
+      this.list = []
+      this.search.page = 1
+      this.search.category = e.data
+      this.fetchData()
+    },
+    handleInput(e){
+      this.list = []
+      this.search.page = 1
+      this.search.keyword = e.keyword
+      this.fetchData()
     }
   },
-  created(){},
-  mixins: [reloadTitleMixin]
+  created(){
+    this.fetchData()
+  },
+  mixins: [reloadTitleMixin, pushRouter, getListMore]
 }
 </script>
 <style lang="less" scoped>
 @import '../../assets/style/color.less';
-.wrapper{
+.content1-wrapper{
+  width: 100vw;
+  height: 100vh;
   background-color: @base-background;
   overflow-y: scroll;
-  header.header{
+  .my-search{
     position: fixed;
-    top:0;
-    left:0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: inherit;
-    height: .8rem;
-    padding: 0 .4rem;
-    line-height: .8rem;
-    color: @text-color-revser;
-    background-color: @base-color;
-    z-index: 1000 ;
+    top: 0;
+    left: 0;
   }
-
-  .list-item{
-    position: relative;
-    width: 100vw;
-    padding: .2rem;
-    margin-top: .2rem;
-    background-color: #fff;
-
-    .list-item__tips{
-      position: absolute;
-      top: 0;
-      right: .2rem;
-      width: 1.4rem;
-      height: .6rem;
-      line-height: .6rem;
-      text-align: center;
+  .list-items{
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0;
+    box-sizing: border-box;
+    p{
+      width: 100%;
     }
-    .list-item__tips-active{
-      color: #7ed321;
-      background-color: rgba(126, 211, 33, 0.2)
-    }
-    .list-item__tips-normal{
-      color: #f5a623;
-      background-color:rgba(245,166,35,0.2);
-    }
-
-    .item__title{
-      margin-top: .1rem;
-    }
-
-    .item-tips{
-      margin-right: .2rem;
-      color: @base-blue;
-    }
-    .item__desc,
-    .item__info{
-      margin-top: .1rem;
-      color: #666;
-      font-size: .28rem;
+    .item-header{
+      display: flex;
+      align-items: center;
+      justify-content:space-between;
+      .item-tips{
+        padding: .1rem .2rem;
+        background-color: rgba(245,166,35,0.2);
+        color: #f5a623;
+      }
+      .item-type{
+        margin-right: .2rem;
+        color: #0076ff;
+      }
     }
   }
 }
