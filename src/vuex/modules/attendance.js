@@ -2,6 +2,7 @@ import {
   leaveList,
   leaveAdd,
   leaveRemovk,
+  checkList,
 } from '@/api/attendance.api.js'
 
 const state = {}
@@ -41,6 +42,19 @@ const actions = {
    */
   async PostLeaveRemovk(context, {id}){
     const response = leaveRemovk({id})
+
+    return response
+  },
+
+  /**
+   * [GetCheckList 考勤评定 -- 考勤列表]
+   * @method GetCheckList
+   * @param  {[type]}     context [description]
+   * @param  {[type]}     search  [description]
+   * @return {Promise}            [description]
+   */
+  async GetCheckList(context, {search: data}){
+    const response = await checkList({data})
 
     return response
   }

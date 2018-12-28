@@ -20,3 +20,10 @@ export const leaveRemovk = ({
   url: '/leave/revoke',
   data: {id}
 }).catch(_catch)
+
+export const checkList = ({
+  data
+}) => $http.post({
+  url:'/attendance/studentData',
+  data
+}).catch(_catch)
