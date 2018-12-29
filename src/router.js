@@ -39,6 +39,10 @@ export default new Router({
           component: () => import('@/components/messageManage/list')
         },
         {
+          path: '/message/calendar',
+          component: () => import('@/components/messageManage/calendar')
+        },
+        {
           path: '/center',
           name: 'center',
           component: () => import ('@/components/centerManage/index')

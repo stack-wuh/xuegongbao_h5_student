@@ -5,6 +5,8 @@ import {
   messageRecive,
   messageReciveList,
   messageUnReciveList,
+  eventsDate,
+  eventsAll
 } from '@/api/message.api.js'
 
 const state = {}
@@ -89,8 +91,31 @@ const actions = {
   async GetMessageUnReciveList(context, {id}){
     const response = await messageUnReciveList({id})
     return response
-  }
+  },
 
+  /**
+   * [GetEventsDate 待办事项 -- 当天的详情]
+   * @method GetEventsDate
+   * @param  {[type]}      context [description]
+   * @param  {[type]}      date    [description]
+   * @return {Promise}             [description]
+   */
+  async GetEventsDate(context, {date: times}){
+    const  response = await eventsDate(times)
+    return response
+  },
+
+  /**
+   * [GetEventsAll 待办事项 -- 当月的事项列表]
+   * @method GetEventsAll
+   * @param  {[type]}     context [description]
+   * @param  {[type]}     search  [description]
+   * @return {Promise}            [description]
+   */
+  async GetEventsAll(context, {search: data}){
+    const response = await eventsAll({data})
+    return response
+  }
 }
 
 const getters = {}

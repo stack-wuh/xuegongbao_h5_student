@@ -45,3 +45,17 @@ export const messageUnReciveList = ({
   url: '/StudentMes/noReceiveList',
   data: {id}
 }).catch(_catch)
+
+export const eventsDate = (data) => $http.post({
+  url: '/StudentMes/getmessagelist',
+  data: {
+    times:data
+  }
+}).catch(_catch)
+
+export const eventsAll = ({
+  data
+}) => $http.post({
+  url: '/StudentMes/getAllmessagelist',
+  data
+}).catch(_catch)

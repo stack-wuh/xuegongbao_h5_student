@@ -3,7 +3,7 @@
     <my-list @scroll.native="handleScholl" :finishedText="isShowText">
       <my-search @getInputChange="handleInput" class="my-search" background>
         <my-picker @emitterPick="handlePick" :data="['全部', '普通消息', '会议消息']" slot="left" style="background-color: inherit;"></my-picker>
-        <img class="icon-calendar" slot="right" src="../../assets/imgs/icon-calendar.png" alt="icon-calendar">
+        <img @click="$push({path: '/message/calendar'})" class="icon-calendar" slot="right" src="../../assets/imgs/icon-calendar.png" alt="icon-calendar">
       </my-search>
       <section style="height: .8rem;"></section>
       <my-list-item v-for="(item, index) in list" :key="index" border>

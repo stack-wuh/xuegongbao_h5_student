@@ -6,9 +6,14 @@ import 'vant/lib/index.css'
 import '@/assets/style/base.less'
 import '@/assets/style/color.less'
 import '@/assets/style/elem.less'
+import '@/assets/style/calendar.less'
 import {
   _toast, setStorageHandle, getStorageHandle
 } from '@/utils/global'
+
+import 'vue-event-calendar/dist/style.css'
+import VueEventCalendar from 'vue-event-calendar'
+Vue.use(VueEventCalendar, {locale: 'zh', className: 'disabled highlight'})
 
 import {
   Button,
