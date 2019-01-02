@@ -23,17 +23,17 @@ export const forms = [
       {
         label: '原密码',
         type: 'default',
-        field: '',
+        field: 'oldpwd',
       },
       {
         label: '新密码',
         type: 'default',
-        field: '',
+        field: 'newpwd1',
       },
       {
         label: '确认密码',
         type: 'default',
-        field: '',
+        field: 'newpwd2',
       }
     ]
   },
@@ -48,43 +48,41 @@ export const forms = [
         label: '性别',
         type: 'select',
         field: 'sex',
-        list: [
-          {
-            label: '男',
-            value: 0
-          },
-          {
-            lable: '女',
-            value: 1
-          }
-        ]
+        list: ['男', '女'],
+        isRequired: true,
       },
       {
         label: '出生日期',
         type: 'date',
-        field: 'time',
+        field: 'birth',
+        isRequired: true,
       },
       {
         label: '政治面貌',
         type: 'select',
-        field: 'face',
+        field: 'status',
+        list: ['中共党员', '预备党员', '入党积极分子', '共青团员', '群众'],
+        isRequired: true,
       },
       {
         label: '班级',
         type: 'default',
-        field: 'classes',
+        field: 'class',
         placeholder: 'XXX1501',
+        isRequired: true,
       },
       {
         label: '宿舍楼栋',
         type: 'select',
-        field: 'No',
+        field: 'dormitory',
+        isRequired: true,
       },
       {
         label: '宿舍号',
         type: 'default',
-        field: 'Nober',
-        placeholder: '格式: 211'
+        field: 'room',
+        placeholder: '格式: 211',
+        isRequired: true,
       },
     ]
   },
@@ -98,17 +96,20 @@ export const forms = [
       {
         label: '手机号',
         type: 'default',
-        field: '',
+        field: 'phone',
+        isRequired: true,
       },
       {
         label: '微信号',
         type: 'default',
-        field: '',
+        field: 'wechat',
+        isRequired: true,
       },
       {
         label: '邮箱',
         type: 'default',
-        field: '',
+        field: 'email',
+        isRequired: true,
       }
     ]
   },
@@ -122,47 +123,56 @@ export const forms = [
       {
         label: '家庭详细地址',
         type: 'default',
-        field: '',
+        field: 'address',
+        isRequired: true,
       },
       {
         label: '家庭邮编',
         type: 'default',
-        field: '',
+        field: 'code',
+        isRequired: false,
       },
       {
         label: '父亲姓名',
         type: 'default',
-        field: '',
+        field: 'pater_name',
+        isRequired: true,
       },
       {
         label: '父亲联系电话',
         type: 'default',
-        field: '',
+        field: 'pater_phone',
+        isRequired: true,
       },
       {
         label: '母亲姓名',
         type: 'default',
-        field: '',
+        field: 'mother_name',
+        isRequired: true,
       },
       {
         label: '母亲联系电话',
         type: 'default',
-        field: '',
-      },
-      {
-        label: '常用亲属姓名',
-        type: 'default',
-        field: '',
+        field: 'mother_phone',
+        isRequired: true,
       },
       {
         label: '常用亲属关系',
         type: 'default',
-        field: '',
+        field: 'relation',
+        isRequired: true,
+      },
+      {
+        label: '常用亲属姓名',
+        type: 'default',
+        field: 'relation_name',
+        isRequired: true,
       },
       {
         label: '常用亲属联系电话',
         type: 'default',
-        field: '',
+        field: 'relation_phone',
+        isRequired: true,
       },
     ]
   },

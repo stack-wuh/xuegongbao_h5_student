@@ -67,6 +67,14 @@ const getters = {
           })
         }
       })
+    }else if(pick.name == '基础信息'){
+      _obj.list.map(ii => {
+        if(ii.label === '宿舍楼栋'){
+          ii.list = context.Center.domList && context.Center.domList.map(ss => {
+            return ss = {label: ss.name, value: ss.name}
+          })
+        }
+      })
     }
     return _obj
   },

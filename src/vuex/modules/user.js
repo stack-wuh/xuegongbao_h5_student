@@ -57,6 +57,12 @@ const actions = {
     }
   },
 
+  /**
+   * [SignOut 登出]
+   * @method SignOut
+   * @param  {[type]}  context [description]
+   * @return {Promise}         [description]
+   */
   async SignOut(context){
     try{
       let response = await signout()
@@ -71,6 +77,12 @@ const actions = {
     }
   },
 
+  /**
+   * [ReLogin 获取个人详情]
+   * @method ReLogin
+   * @param  {[type]}  context [description]
+   * @return {Promise}         [description]
+   */
   async ReLogin(context){
     const response  = await reLogin()
     setStorageHandle('myInfo', response.info)

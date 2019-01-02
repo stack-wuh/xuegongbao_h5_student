@@ -1,11 +1,11 @@
 <template>
   <section class="content-wrapper flex flex-flow__col flex-align__center">
     <section class="img-box">
-      <img :src="defaultImg" alt="avatar">
+      <img :src="info.wx_pic || defaultImg" alt="avatar">
     </section>
-    <h3 class="info-name">陶俊贞</h3>
-    <p class="info-gray">电话: 未公开</p>
-    <p class="info-gray">邮箱: 未公开</p>
+    <h3 class="info-name">{{info.name}}</h3>
+    <p class="info-gray">电话: {{info.tel || '未公开'}}</p>
+    <p class="info-gray">邮箱: {{info.email || '未公开'}}</p>
   </section>
 </template>
 <script>
@@ -18,11 +18,17 @@ export default {
   computed: {},
   data(){
     return {
-
+      info: {},
     }
   },
-  methods: {},
-  created(){},
+  methods: {
+    ...mapActions(['GetteacherInfo'])
+  },
+  created(){
+    this.GetteacherInfo().then(res => {
+      this.info = res
+    })
+  },
   mixins: [reloadTitleMixin, pushRouter]
 }
 </script>

@@ -106,7 +106,12 @@ export default {
       'PostApplyInfo': 'PostApplyInfo',
       'getCategoryList':'getCategoryList',
       'handleSaveFormByField': 'handleSaveFormByField',
-      'PostEnlistAdd': 'PostEnlistAdd'
+      'PostEnlistAdd': 'PostEnlistAdd',
+      'PostUserConcat': 'PostUserConcat',
+      'PostFamilyConcat': 'PostFamilyConcat',
+      'PostCheckPwd': 'PostCheckPwd',
+      'GetDormitoryList': 'GetDormitoryList',
+      'PostUserInfo': 'PostUserInfo'
     }),
     /**
      * [handleToggleupop description]
@@ -146,19 +151,26 @@ export default {
       let actions = new Map([
         [{name: '意见征集'}, 'PostIdeaInfo'],
         [{name: '资助申请'}, 'PostApplyInfo'],
-        [{name: '科研赛事招募令'}, 'PostEnlistAdd']
+        [{name: '科研赛事招募令'}, 'PostEnlistAdd'],
+        [{name: '个人联系方式'}, 'PostUserConcat'],
+        [{name: '家庭联系方式'}, 'PostFamilyConcat'],
+        [{name: '修改密码'}, 'PostCheckPwd'],
+        [{name: '基础信息'}, 'PostUserInfo']
       ])
       let action = [...actions].filter(([key, val]) => key.name == this.query.name)
       action.forEach(([key, val]) => {
         this[val].call(this, {form: this.form})
       })
-      // console.log('this is click submit', this.form)
+      console.log('this is click submit', this.form)
     }
   },
   created() {
     this.docTitle = this.formLists(this.search).docTitle || '学工宝学生端公众号'
     switch(this.query.name){
       case '科研赛事招募令': this.getCategoryList()
+          break;
+      case '基础信息': this.GetDormitoryList()
+          break;
     }
   },
   mixins: [reloadTitleMixin]

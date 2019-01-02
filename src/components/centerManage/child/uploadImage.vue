@@ -1,13 +1,5 @@
 <template>
   <section class="content-wrapper flex flex-flow__col">
-    <!-- <section class="img-wrapper">
-      <img :src="defaultImg" alt="img">
-      <p>未上传照片</p>
-
-      <van-uploader :after-read="onRead" style="width: 100%; height: 100%;">
-        <van-icon name="photograph" />
-      </van-uploader>
-    </section> -->
     <van-uploader class="img-wrapper"
      :after-read="handleImgSuccess">
       <img :src="uploadImg || defaultImg" alt="img">
@@ -35,15 +27,40 @@ export default {
       defaultImg: require('@/assets/imgs/center/img.png'),
 
       uploadImg: '',
+      file: '',
     }
   },
   methods: {
     handleClickParent(){
-      console.log('is clicked')
+      window.axois({
+        method: 'post',
+        url: window.rootPath + '/Studentinfo/updateInfo',
+        data: this.file
+      }).then(res=>{
+        window.$toast.clear()
+        if(!res.data.error){
+          setTimeout(()=>{
+            window.$router.go(-1)
+          }, 1000)
+        }
+      }).catch(() =>{
+        this.$toast({type: 3, msg: '图片上传错误'})
+      })
     },
     handleImgSuccess(file){
-      this.uploadImg = file.content
-      console.log(file)
+      let _form = new FormData()
+      _form.append('file', file.file)
+      window.axois({
+        method: 'post',
+        url:window.rootPath + '/upload/uploadImg',
+        data: _form
+      }).then(res =>{
+        window.$toast.clear()
+        this.uploadImg = res.data.msg
+        this.file = _form
+      }).catch(() => {
+        this.$toast({type: 3, msg: '图片上传错误'})
+      })
     }
   },
   created(){},

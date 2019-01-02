@@ -12,6 +12,7 @@ import Job from '@/vuex/modules/job'
 import Life from '@/vuex/modules/life'
 import Attendance from '@/vuex/modules/attendance'
 import Message from '@/vuex/modules/message'
+import Center from '@/vuex/modules/center'
 
 export default new Vuex.Store({
   ...Index,
@@ -23,5 +24,6 @@ export default new Vuex.Store({
     Life,
     Attendance,
     Message,
+    Center,
   }
 })
