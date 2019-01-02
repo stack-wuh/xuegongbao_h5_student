@@ -3,6 +3,7 @@ import {
   leaveAdd,
   leaveRemovk,
   checkList,
+  awardList,
 } from '@/api/attendance.api.js'
 
 const state = {}
@@ -57,7 +58,9 @@ const actions = {
     const response = await checkList({data})
 
     return response
-  }
+  },
+
+
 }
 
 const getters = {}

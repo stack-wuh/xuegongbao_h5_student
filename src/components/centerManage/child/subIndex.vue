@@ -1,25 +1,16 @@
 <template>
   <section class="content-wrapper">
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text='没有更多了'
-      @load="onLoad"
-      >
-      <ul class="list-wrapper">
-        <li class="list-item__base flex flex-justify__between" v-for="(item, index) in 10" :key="index">
-          <section>
-            <p>国家奖学金</p>
-            <p>获奖学年: 2015-2016</p>
-            <p>奖励分: 2分</p>
-          </section>
-          <section>
-            <img src="../../../assets/imgs/logo.png" alt="logo" class="item__logo">
-          </section>
-        </li>
-      </ul>
-    </van-list>
-    <section @click="$push({path: '/center/subindex/awardSub', query: {name: query.name}})" class="load-wrapper">
+    <my-list @scroll.native="handleScholl" :finishedText="isShowText">
+      <my-list-item v-for="(item, index) in list" :key="index" >
+        <section>
+          <p>{{item.name}}</p>
+          <p class="f13 c999">获奖学年: {{item.years}}</p>
+          <p class="f13 c999">奖励分: {{item.score}}分</p>
+        </section>
+        <img @click="handlePrevImg(item)" slot="right" :src="item.pic && item.pic[0] || defaultImg" alt="logo">
+      </my-list-item>
+    </my-list>
+    <section @click="$push({path: query.name == '已发表论文' ? '/center/thesis/sub' : '/center/subindex/awardSub', query: {name: query.name}})" class="load-wrapper">
       <img src="../../../assets/imgs/center/icon-edit-white.png" alt="icon-edit">
       <p>添加</p>
     </section>
@@ -27,29 +18,70 @@
 </template>
 <script>
 import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
-import {reloadTitleMixin, pushRouter} from '@/utils/mixin'
+import {reloadTitleMixin, pushRouter, getListMore} from '@/utils/mixin'
+import {ImagePreview } from 'vant'
 
+import MyList from '@/views/layout/list'
+import MyListItem from '@/views/layout/listItem'
 export default {
   props: {},
   name: '',
-  components: {},
+  components: {
+    MyList,
+    MyListItem,
+  },
   computed: {},
   data(){
     return {
-      loading: false,
-      finished: false,
+      isShowText: '没有更多啦',
+      isShowMore: false,
+
+      list: [],
     }
   },
   methods: {
-    onLoad(){
-      setTimeout(() => {
-        this.loading = false
-        this.finished = true
-      }, 300)
+    ...mapActions({
+      'GetAwardList' : 'GetAwardList'
+    }),
+    getMore(){
+
+    },
+    /**
+     * [handlePrevImg 图片预览]
+     * @method handlePrevImg
+     * @param  {[type]}      item [description]
+     * @return {[type]}           [description]
+     */
+    handlePrevImg(item){
+      ImagePreview(item.pic)
+    },
+    /**
+     * [fetchData ]
+     * @method fetchData
+     * @return {[type]}  [description]
+     */
+    fetchData(){
+      this.GetAwardList().then(res => {
+        if(this.query.name === '奖学金'){
+          this.list = res.burse.list
+          this.isShowText = res.burse.hint && res.burse.hint
+        }else if(this.query.name === '荣誉称号'){
+          this.list = res.title.list
+          this.isShowText = res.title.hint && res.title.hint
+        }else if(this.query.name === '软著专利'){
+          this.list = res.patent.list
+          this.isShowText = res.patent.hint && res.patent.hint
+        }else if(this.query.name ===  '获奖情况'){
+          this.list = res.prize.list
+          this.isShowText = res.prize.hint && res.prize.hint
+        }
+      })
     }
   },
-  created(){},
-  mixins: [reloadTitleMixin, pushRouter]
+  created(){
+    this.fetchData()
+  },
+  mixins: [reloadTitleMixin, pushRouter, getListMore]
 }
 </script>
 <style lang="less" scoped>
@@ -82,19 +114,9 @@ export default {
     }
   }
 
-  .list-wrapper{
-    .list-item__base{
-      min-height: 1.65rem;
-      padding: .1rem .2rem;
-      background-color: #fff;
-      border-bottom: .1rem solid @base-background;
-      box-sizing: border-box;
-
-    }
-    img.item__logo{
-      width: 1.2rem;
-      height: 1.2rem;
-    }
+  img[alt="logo"]{
+    width: 1.2rem;
+    height: 1.2rem;
   }
 }
 </style>

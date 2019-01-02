@@ -5,6 +5,8 @@ import {
   checkPwd,
   dormitoryList,
   userInfo,
+  awardList,
+  awardSub,
 } from '@/api/center.api.js'
 import {
   _toast
@@ -110,6 +112,50 @@ const actions = {
   async PostUserInfo(context, {form: data}){
     const response = await userInfo({data})
     if(!response.error){
+      setTimeout(() => {
+        window.$router.go(-1)
+      }, 1000)
+    }
+    return response
+  },
+  /**
+   * [GetAwardList  个人中心 -- 获取奖学金]
+   * @method GetAwardList
+   * @param  {[type]}     context [description]
+   * @return {Promise}            [description]
+   */
+  async GetAwardList(context){
+    const response = await awardList()
+
+    return response
+  },
+
+  /**
+   * [PostAward 添加奖学金]
+   * @method PostAward
+   * @param  {[type]}  context [description]
+   * @param  {[type]}  form    [description]
+   * @return {Promise}         [description]
+   */
+  async PostAward(context, {form: {
+    id: caia_id,
+    rank: name,
+    pic,
+    score,
+    type_,
+    year: years
+  },form}){
+    const response = await awardSub({data: {
+      caia_id,
+      name,
+      pic: pic.toString(),
+      score,
+      type_,
+      years,
+      name,
+    }})
+    if(!response.error){
+      _toast({type: 2, msg: '添加成功'})
       setTimeout(() => {
         window.$router.go(-1)
       }, 1000)

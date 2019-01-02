@@ -10,6 +10,8 @@ export const reloadTitleMixin = {
 
       collectDefault: require('@/assets/imgs/icon-collected.png'),
       collectActive: require('@/assets/imgs/icon-collected-s.png'),
+
+      iconDelete: require('@/assets/imgs/icon-delete.png'),
     }
   },
   computed:{

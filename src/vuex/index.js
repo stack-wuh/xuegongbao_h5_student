@@ -26,6 +26,7 @@ const mutations = {
   },
 
   setFormDateByField(state, form){
+    state.form.id = form.id
     state.form[form.field] = form.label
     state.form[form.child] = form.value
   },
@@ -72,6 +73,54 @@ const getters = {
         if(ii.label === '宿舍楼栋'){
           ii.list = context.Center.domList && context.Center.domList.map(ss => {
             return ss = {label: ss.name, value: ss.name}
+          })
+        }
+      })
+    }else if(pick.name == '奖学金'){
+      _obj.list.map(ii => {
+        if(ii.label == '年度'){
+          ii.list = context.Common.yearList && context.Common.yearList.map(ss => {
+            return ss = {label: ss, value: ss}
+          })
+        }else if(ii.label == '名称'){
+          ii.list = context.Common.burseList && context.Common.burseList.map(ss => {
+            return ss = {label: ss.rank, value: ss.score, id: ss.id}
+          })
+        }
+      })
+    }else if(pick.name == '荣誉称号'){
+      _obj.list.map(ii => {
+        if(ii.label == '年度'){
+          ii.list = context.Common.yearList && context.Common.yearList.map(ss => {
+            return ss = {label: ss, value: ss}
+          })
+        }else if(ii.label == '名称'){
+          ii.list = context.Common.awardNameList && context.Common.awardNameList.map(ss => {
+            return ss = {label: ss.rank, value: ss.score, id: ss.id}
+          })
+        }
+      })
+    }else if(pick.name == '软著专利'){
+      _obj.list.map(ii => {
+        if(ii.label == '年度'){
+          ii.list = context.Common.yearList && context.Common.yearList.map(ss => {
+            return ss = {label: ss, value: ss}
+          })
+        }else if(ii.label == '名称'){
+          ii.list = context.Common.patendList && context.Common.patendList.map(ss => {
+            return ss = {label: ss.rank, value: ss.score, id: ss.id}
+          })
+        }
+      })
+    }else if(pick.name == '获奖情况'){
+      _obj.list.map(ii => {
+        if(ii.label == '年度'){
+          ii.list = context.Common.yearList && context.Common.yearList.map(ss => {
+            return ss = {label: ss, value: ss}
+          })
+        }else if(ii.label == '名称'){
+          ii.list = context.Common.prizeList && context.Common.prizeList.map(ss => {
+            return ss = {label: ss.rank, value: ss.score, id: ss.id}
           })
         }
       })

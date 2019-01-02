@@ -38,3 +38,15 @@ export const userInfo = ({
   url: '/Studentinfo/updateInfo',
   data
 }).catch(_catch)
+
+export const awardList = () =>  $http.post({
+  url: '/Awards/awardsList',
+}).catch(_catch)
+
+
+export const awardSub = ({
+  data
+}) => $http.post({
+  url: '/Awards/addAwards',
+  data
+}).catch(_catch)

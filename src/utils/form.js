@@ -187,6 +187,7 @@ export const forms = [
         type: 'select',
         field:'year',
         child: '',
+        isRequired: true,
         placeholder: '请选择年度',
         list: [
           {
@@ -204,11 +205,13 @@ export const forms = [
         type: 'select',
         field: 'rank',
         child: 'score',
+        isRequired: true,
         placeholder: '请选择名称',
         list: [
           {
             label: '国家奖学金',
-            value: 1
+            value: 1,
+            id: 11,
           }
         ]
       },
@@ -217,6 +220,167 @@ export const forms = [
         type: 'panel',
         field: 'score',
         placeholder: '',
+        isRequired: true,
+      }
+    ],
+  },
+  {
+    name: '添加荣誉称号',
+    desc: '个人中心添加荣誉称号',
+    picks: ['荣誉称号'],
+    types: 1,
+    list: [
+      {
+        label: '年度',
+        type: 'select',
+        field:'year',
+        child: '',
+        isRequired: true,
+        placeholder: '请选择年度',
+        list: []
+      },
+      {
+        label: '名称',
+        type: 'select',
+        field: 'rank',
+        child: 'score',
+        isRequired: true,
+        placeholder: '请选择荣誉称号',
+        list: []
+      },
+      {
+        label: '奖励分',
+        type: 'panel',
+        field: 'score',
+        placeholder: '',
+        isRequired: true,
+      }
+    ],
+  },
+  {
+    name: '添加软著专利',
+    desc: '个人中心添加软著专利',
+    picks: ['软著专利'],
+    types: 1,
+    list: [
+      {
+        label: '年度',
+        type: 'select',
+        field:'year',
+        child: '',
+        isRequired: true,
+        placeholder: '请选择年度',
+        list: []
+      },
+      {
+        label: '名称',
+        type: 'select',
+        field: 'rank',
+        child: 'score',
+        isRequired: true,
+        placeholder: '请选择荣誉称号',
+        list: []
+      },
+      {
+        label: '奖励分',
+        type: 'panel',
+        field: 'score',
+        placeholder: '',
+        isRequired: true,
+      }
+    ],
+  },
+  {
+    name: '添加获奖情况',
+    desc: '个人中心添加获奖情况',
+    picks: ['获奖情况'],
+    types: 1,
+    list: [
+      {
+        label: '年度',
+        type: 'select',
+        field:'year',
+        child: '',
+        isRequired: true,
+        placeholder: '请选择年度',
+        list: []
+      },
+      {
+        label: '名称',
+        type: 'select',
+        field: 'rank',
+        child: 'score',
+        isRequired: true,
+        placeholder: '请选择荣誉称号',
+        list: []
+      },
+      {
+        label: '奖励分',
+        type: 'panel',
+        field: 'score',
+        placeholder: '',
+        isRequired: true,
+      }
+    ],
+  },
+  {
+    name: '添加已经发表的论文',
+    desc: '个人中心添加已发表的论文',
+    picks: ['已发表论文'],
+    types: 1,
+    list: [
+      {
+        label: '年度',
+        type: 'select',
+        field:'year',
+        child: '',
+        isRequired: true,
+        placeholder: '请选择年度',
+        list: []
+      },
+      {
+        label: '期刊等级',
+        type: 'select',
+        field: 'rank',
+        child: 'score',
+        isRequired: true,
+        placeholder: '请选择荣誉称号',
+        list: []
+      },
+      {
+        label: '期刊名称',
+        type: 'default',
+        field: 'name',
+        isRequired: true,
+        placeholder: '请编辑期刊名称',
+      },
+      {
+        label: '题目',
+        type: 'default',
+        field: 'ques',
+        isRequired: true,
+        placeholder: '请编辑题目',
+      },
+      {
+        label: '第几作者',
+        type: 'select',
+        field: 'author',
+        isRequired: true,
+        placeholder: '请编辑选择作者类型',
+      },
+      {
+        label: '发表时间',
+        type: 'time',
+        field: 'date',
+        isRequired: true,
+        placeholder: '请选择发表时间',
+      },
+      {
+        label: '奖励分',
+        type: 'panel',
+        field: 'score',
+        placeholder: '',
+        isRequired: true,
       }
     ],
   },
