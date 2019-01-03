@@ -4,24 +4,24 @@
     <section class="form-area">
       <van-cell-group>
           <van-cell title="年度">
-            <van-field class="my-field" placeholder="请选择年度" />
+            <span @click="handleOpenPopup(0)" class="c666" slot="right-icon">{{form.years || '请选择年度'}}</span>
           </van-cell>
           <van-cell title="期刊等级">
-            <span @click="handleOpenPopup(0)" class="c666" slot="right-icon">请选择期刊等级</span>
+            <span @click="handleOpenPopup(1)" class="c666" slot="right-icon">{{form.name || '请选择期刊等级'}}</span>
           </van-cell>
           <van-cell title="期刊名称">
-            <van-field class="my-field" placeholder="请编辑期刊名称" />
+            <van-field class="my-field" v-model='form.journal' placeholder="请编辑期刊名称" />
           </van-cell>
           <van-cell title="题目">
-            <van-field class="my-field" placeholder="请编辑题目" />
+            <van-field class="my-field" v-model="form.title" placeholder="请编辑题目" />
           </van-cell>
           <van-cell title="第几作者">
-            <span @click="handleOpenPopup(1)" class="c666" slot="right-icon">请选择作者</span>
+            <span @click="handleOpenPopup(2)" class="c666" slot="right-icon">{{form.author || '请选择作者'}}</span>
           </van-cell>
           <van-cell title="发表时间">
-            <span @click="handleOpenPopup(2)" class="c666" slot="right-icon">请选择发表时间</span>
+            <span @click="handleOpenPopup(3)" class="c666" slot="right-icon">{{form.pubtime || '请选择发表时间'}}</span>
           </van-cell>
-          <van-cell title="奖励分" value="1"></van-cell>
+          <van-cell title="奖励分" :value="form.score"></van-cell>
       </van-cell-group>
     </section>
 
@@ -39,16 +39,17 @@
       v-model="isShowPopup"
       position="bottom">
       <van-picker
-        v-if="[0, 1].includes(currIndex)"
+        v-if="[0, 1, 2].includes(currIndex)"
         @cancel="isShowPopup = false"
         @confirm="handleChange"
         show-toolbar
-        :columns="columns[currIndex]"
+        :columns="pickerList"
         value-key="label" >
       </van-picker>
       <van-datetime-picker
+        v-else
         @cancel="isShowPopup = false"
-        @confirm="pickerConfirm"
+        @confirm="handleChange"
         :min-date="new Date()"
         type="date">
       </van-datetime-picker>
@@ -68,14 +69,30 @@ export default {
   components: {
     MyButton,
   },
-  computed: {},
+  computed: {
+    // 返回新的picker列表
+    pickerList(){
+      return this.columns[this.currIndex]
+    }
+  },
   data(){
     return {
       isShowPopup: false,
       currIndex: -1,
-      form: {},
+      form: {
+        years: '',
+        journal: '',
+        title: '',
+        author: '',
+        pubtime: '',
+        score: '',
+        caia_id: '',
+        name: '',
+        type_: 'thesis'
+      },
       defaultUpload: require('@/assets/imgs/icon-upload.png'),
       columns: [
+        ['2018-2019'],
         [
           {label: 'aa', value: 1}
         ],
@@ -101,6 +118,11 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      'GetYearList': 'GetYearList',
+      'GetThesisList' : 'GetThesisList',
+      'PostAwardSubForThesis' : 'PostAwardSubForThesis'
+    }),
     uploadSuccess(file, index){
       let formData = new FormData()
       formData.append('file', file.file)
@@ -118,16 +140,36 @@ export default {
       this.currIndex = index
     },
     handleChange(e){
-      console.log(e)
-    },
-    pickerConfirm(e){
-      console.log(formatTime(e, false))
+      switch(this.currIndex){
+        case 0 : this.form.years = e
+          break;
+        case 1: this.form.name = e.label, this.form.caia_id = e.id, this.form.score = e.value
+          break;
+        case 2: this.form.author = e
+          break;
+        case 3: this.form.pubtime = formatTime(e, false)
+          break;
+      }
+      this.isShowPopup = false
+
     },
     handleSubmit(){
-      console.log('is ok 111')
+      let [pic_cover, pic_list, pic_content] = this.imgs.map(ii => ii.url)
+      let form = {...this.form, pic_cover, pic_list, pic_content}
+      this.PostAwardSubForThesis({form})
     }
   },
-  created(){}
+  created(){
+    this.GetYearList().then(res => {
+      this.columns[0] = res
+    })
+    this.GetThesisList().then(res => {
+      let _arr =  res.map(ii => {
+        return ii = {label: ii.rank, value: ii.score, id: ii.id}
+      })
+      this.columns[1] = _arr
+    })
+  }
 }
 </script>
 <style lang="less" scoped>

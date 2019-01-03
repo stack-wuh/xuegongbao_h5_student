@@ -6,6 +6,8 @@ import {
   awardName,
   patendList,
   prizeList,
+  thesisList,
+  recordList,
 } from '@/api/common.api.js'
 
 const state = {
@@ -15,6 +17,8 @@ const state = {
   awardNameList: [], // 荣誉称号列表
   patendList: [], //软著专利列表
   prizeList: [], // 获奖列表
+  thesisList: [], //期刊等级列表
+  recordList: [], // 个人履历模块的全部下拉
 }
 
 const mutations = {
@@ -40,6 +44,10 @@ const mutations = {
 
   SET_PRIZE: (state, response) => {
     state.prizeList = response
+  },
+
+  SET_THESIS: (state, response) => {
+    state.thesisList = response
   }
 }
 
@@ -119,6 +127,29 @@ const actions = {
   async GetPrizeList(context){
     const response = await prizeList()
     context.commit('SET_PRIZE', response)
+    return response
+  },
+
+  /**
+   * [GetThesisList 获取期刊等级列表]
+   * @method GetThesisList
+   * @param  {[type]}      context [description]
+   * @return {Promise}             [description]
+   */
+  async GetThesisList(context){
+    const response = await thesisList()
+    context.commit('SET_THESIS', response)
+    return response
+  },
+
+  /**
+   * [GetRecordList 个人中心 -- 个人履历]
+   * @method GetRecordList
+   * @param  {[type]}      context [description]
+   * @return {Promise}             [description]
+   */
+  async PostRecordList(context){
+    const response = await recordList()
     return response
   }
 }

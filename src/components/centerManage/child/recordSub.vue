@@ -22,20 +22,21 @@
                   class="label-cell"
                   v-if="sub.type == 'select'">
                   <span>{{sub.label}}</span>
-                  <span>{{sub.value || sub.placeholder}}</span>
+                  <span @click="handleOpenDialog(index, cid)">{{item.forms.post[cid][sub.field] || sub.placeholder}}</span>
                 </p>
                 <p class="label-cell label-cell__input"
                    v-if = "sub.type == 'default'">
                    <van-field
                       :label="sub.label"
                       :value="sub.value"
+                      v-model="item.forms.post[cid][sub.field]"
                       :placeholder="sub.placeholder"/>
                 </p>
                 <div class="list-item__content">
                   <van-cell-group>
                       <van-field
                         v-if="sub.type === 'textarea'"
-                        v-model="sub.value"
+                        v-model="item.forms.post[cid][sub.field]"
                         :label = 'sub.label'
                         :type = 'sub.type'
                         :placeholder = 'sub.placeholder'
@@ -64,6 +65,14 @@
         placeholder="请简要说明" />
     </section>
     <my-button size="large" :childClick="handleSubmit"></my-button>
+    <van-popup v-model="isShowPopup" position="bottom">
+      <van-picker
+        show-toolbar
+        @cancel="isShowPopup = false"
+        @confirm="handleChangePicker"
+        :columns="columns"
+        value-key="name"></van-picker>
+    </van-popup>
   </section>
 </template>
 <script>
@@ -73,22 +82,26 @@ import MyButton from '@/views/forms/button'
 const menuList = [
   {
     name: '是否担任班级干部',
-    isChecked: true,
+    isChecked: false,
+    forms:{
+      post: [{}]
+    },
+    rename: 'banji',
     child: [
       [
         {
           label: '岗位名称' ,
-          field: '',
+          field: 'post_name',
           value: '',
           type: 'select',
-          placeholder: '选择岗位名称'
+          placeholder: '选择岗位名称',
         },
         {
           label: '主要工作说明',
-          field: '',
+          field: 'content',
           value: '',
           type: 'textarea',
-          placeholder: '请简要说明工作内容'
+          placeholder: '请简要说明工作内容',
         }
       ]
     ]
@@ -96,25 +109,29 @@ const menuList = [
   {
     name: '是否担任院级干部',
     isChecked: false,
+    forms: {
+      post: [{}]
+    },
+    rename: 'yuanji',
     child: [
       [
         {
           label: '岗位名称' ,
-          field: '',
+          field: 'post_name',
           value: '',
           type: 'select',
           placeholder: '请选择岗位名称'
         },
         {
           label: '部门',
-          field: '',
+          field: 'department',
           value: '',
           type: 'default',
           placeholder: '请编辑部门'
         },
         {
           label: '主要工作内容',
-          field: '',
+          field: 'content',
           value: '',
           type: 'textarea',
           placeholder: '请简要说明工作内容'
@@ -125,25 +142,29 @@ const menuList = [
   {
     name: '是否担任校级干部',
     isChecked: false,
+    forms: {
+      post: [{}]
+    },
+    rename: 'xiaoji',
     child: [
         [
           {
             label: '岗位名称' ,
-            field: '',
+            field: 'post_name',
             value: '',
             type: 'select',
             placeholder: '请选择岗位名称'
           },
           {
             label: '部门',
-            field: '',
+            field: 'department',
             value: '',
             type: 'default',
             placeholder: '请编辑部门'
           },
           {
             label: '主要工作内容',
-            field: '',
+            field: 'content',
             value: '',
             type: 'textarea',
             placeholder: '请简要说明工作内容'
@@ -154,11 +175,15 @@ const menuList = [
   {
     name: '是否参加社团组织',
     isChecked: false,
+    forms: {
+      post: [{}]
+    },
+    rename: 'shetuan',
     child: [
       [
         {
           label: '主要工作内容' ,
-          field: '',
+          field: 'content',
           value: '',
           type: 'textarea',
           placeholder: '请简要说明工作内容'
@@ -169,11 +194,15 @@ const menuList = [
   {
     name: '是否有实习经验',
     isChecked: false,
+    forms: {
+      post: [{}]
+    },
+    rename: 'shixi',
     child: [
       [
         {
           label: '主要工作内容' ,
-          field: '',
+          field: 'content',
           value: '',
           type: 'textarea',
           placeholder: '请简要说明工作内容'
@@ -191,24 +220,63 @@ export default {
   computed: {},
   data(){
     return {
-      isShow: false,
+      isShowPopup: false,
       menuList,
       content: '',
-      docTitle: '个人履历'
+      docTitle: '个人履历',
+
+      columns: [],
+      allColumns: [],
+      level_1: -1,
+      level_2: -1,
     }
   },
   methods: {
+    ...mapActions({
+      'PostRecordList': 'PostRecordList',
+      'PostRecordSub': 'PostRecordSub'
+    }),
     handleAddItem(index){
       let newArr = this.menuList[index].child[0]
       let menuList = JSON.parse(JSON.stringify(this.menuList))
       menuList[index].child.push(newArr)
+      menuList[index].forms.post.push({})
       this.menuList = menuList
     },
+    handleOpenDialog(index, evl){
+      this.level_1 = index
+      this.level_2 = evl
+      this.isShowPopup = true
+      switch(index){
+        case 0 : return this.columns = this.allColumns.banji
+        case 1 : return this.columns = this.allColumns.yuanji
+        case 2 : return this.columns = this.allColumns.xiaoji
+      }
+    },
+    handleChangePicker(e){
+      this.menuList[this.level_1].forms.post[this.level_2] = {...this.menuList[this.level_1].forms.post[this.level_2], post: e.id, post_name: e.name}
+      this.isShowPopup = false
+    },
     handleSubmit(){
-      console.log('is clicked ')
+      let form = {}
+      let data = {qita: {content: this.content}}
+      this.menuList.map(ii => {
+        let obj = {}
+        data[ii.rename] = {
+          work: ii.isChecked,
+          post: ii.forms.post
+        }
+      })
+      form.year = this.query.name
+      form.data = JSON.stringify(data)
+      this.PostRecordSub({form})
     }
   },
-  created(){},
+  created(){
+    this.PostRecordList().then(res => {
+      this.allColumns = res
+    })
+  },
   mixins: [reloadTitleMixin, pushRouter]
 }
 </script>

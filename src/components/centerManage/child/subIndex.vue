@@ -10,7 +10,7 @@
         <img @click="handlePrevImg(item)" slot="right" :src="item.pic && item.pic[0] || defaultImg" alt="logo">
       </my-list-item>
     </my-list>
-    <section @click="$push({path: query.name == '已发表论文' ? '/center/thesis/sub' : '/center/subindex/awardSub', query: {name: query.name}})" class="load-wrapper">
+    <section @click="$push({path: query.name == '已发表论文' ? '/center/thesis/sub' : query.name == '考试证书' ? '/center/certificate/sub' : '/center/subindex/awardSub', query: {name: query.name}})" class="load-wrapper">
       <img src="../../../assets/imgs/center/icon-edit-white.png" alt="icon-edit">
       <p>添加</p>
     </section>
@@ -41,7 +41,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      'GetAwardList' : 'GetAwardList'
+      'GetAwardList' : 'GetAwardList',
+      'GetCertificateList': 'GetCertificateList'
     }),
     getMore(){
 
@@ -74,12 +75,22 @@ export default {
         }else if(this.query.name ===  '获奖情况'){
           this.list = res.prize.list
           this.isShowText = res.prize.hint && res.prize.hint
+        }else if (this.query.name == '已发表论文'){
+          this.list = res.thesis.list
+          this.isShowText = res.thesis.hint && res.thesis.hint
         }
       })
     }
   },
   created(){
-    this.fetchData()
+    if(this.query.name == '考试证书'){
+      this.GetCertificateList().then(res => {
+        this.list = res.list
+        this.isShowText = res.hint || '没有更多啦'
+      })
+    }else {
+      this.fetchData()
+    }
   },
   mixins: [reloadTitleMixin, pushRouter, getListMore]
 }

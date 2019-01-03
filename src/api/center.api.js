@@ -50,3 +50,28 @@ export const awardSub = ({
   url: '/Awards/addAwards',
   data
 }).catch(_catch)
+
+export const awardSubForThesis = ({
+  data
+}) => $http.post({
+  url: '/Awards/addAwards',
+  data
+}).catch(_catch)
+
+export const certificateList = () => $http.post({
+  url: '/Awards/certificate',
+}).catch(_catch)
+
+export const certificateSub = ({
+  data
+}) => $http.post({
+  url: '/awards/addCertificate',
+  data
+}).catch(_catch)
+
+export const recordSub = ({
+  data
+}) => $http.post({
+  url: '/record/addRecord',
+  data
+}).catch(_catch)

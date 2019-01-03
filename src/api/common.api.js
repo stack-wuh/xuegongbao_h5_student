@@ -57,3 +57,11 @@ export  const patendList = () => $http.post({
 export const prizeList = () => $http.post({
   url: '/Awards/getPrizeList'
 }).catch(_catch)
+
+export const thesisList = () => $http.post({
+  url: '/Awards/getThesisList',
+}).catch(_catch)
+
+export const recordList = () => $http.post({
+  url: '/record/postList'
+}).catch(_catch)

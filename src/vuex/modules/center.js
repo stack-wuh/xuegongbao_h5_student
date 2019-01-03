@@ -7,6 +7,10 @@ import {
   userInfo,
   awardList,
   awardSub,
+  awardSubForThesis,
+  certificateList,
+  certificateSub,
+  recordSub,
 } from '@/api/center.api.js'
 import {
   _toast
@@ -156,6 +160,68 @@ const actions = {
     }})
     if(!response.error){
       _toast({type: 2, msg: '添加成功'})
+      setTimeout(() => {
+        window.$router.go(-1)
+      }, 1000)
+    }
+    return response
+  },
+
+  /**
+   * [PostAwardSubForThesis 个人中心 -- 添加奖励 -- 已发表论文]
+   * @method PostAwardSubForThesis
+   * @param  {[type]}              context [description]
+   * @param  {[type]}              form    [description]
+   * @return {Promise}                     [description]
+   */
+  async PostAwardSubForThesis(context, {form: data}){
+    const response = await awardSubForThesis({data})
+    if(!response.error){
+      setTimeout(() => {
+        window.$router.go(-1)
+      }, 1000)
+    }
+    return response
+  },
+
+  /**
+   * [PostCertificateList 个人中心 -- 奖励 -- 考试证书]
+   * @method PostCertificateList
+   * @param  {[type]}            context [description]
+   * @return {Promise}                   [description]
+   */
+  async GetCertificateList(context){
+    const response = await certificateList()
+
+    return response
+  },
+
+  /**
+   * [PostCertificateSub 个人中心 -- 奖励 -- 发布考试证书]
+   * @method PostCertificateSub
+   * @param  {[type]}           context [description]
+   * @return {Promise}                  [description]
+   */
+  async PostCertificateSub(context, {form: data}){
+    const response = await certificateSub({data})
+    if(!response.error){
+      setTimeout(() => {
+        window.$router.go(-1)
+      }, 1000)
+    }
+    return response
+  },
+
+  /**
+   * [PostRecordSub 个人中心 -- 发布个人履历]
+   * @method PostRecordSub
+   * @param  {[type]}      context [description]
+   * @param  {[type]}      form    [description]
+   * @return {Promise}             [description]
+   */
+  async PostRecordSub(context, {form: data}){
+    const response = await recordSub({data})
+    if(!response.error){
       setTimeout(() => {
         window.$router.go(-1)
       }, 1000)

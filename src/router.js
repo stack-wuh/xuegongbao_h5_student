@@ -72,6 +72,10 @@ export default new Router({
           component: () => import ('@/components/centerManage/child/thesisSub')
         },
         {
+          path: '/center/certificate/sub',
+          component: () => import ('@/components/centerManage/child/certificateSub')
+        },
+        {
           path: '/index/game/index',
           component: () => import ('@/components/studyManage/game/index')
         },
