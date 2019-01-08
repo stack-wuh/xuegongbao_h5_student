@@ -76,6 +76,14 @@ export default new Router({
           component: () => import ('@/components/centerManage/child/certificateSub')
         },
         {
+          path: '/index/sign/photo',
+          component: () => import ('@/components/attendanceManage/signin/photo')
+        },
+        {
+          path: '/index/sign/index',
+          component: () => import ('@/components/attendanceManage/signin/index')
+        },
+        {
           path: '/index/game/index',
           component: () => import ('@/components/studyManage/game/index')
         },

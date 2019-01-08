@@ -34,6 +34,7 @@ const menuList = [
       {
         name: '我要签到',
         icon: require('@/assets/imgs/icon-11.png'),
+        path: '/index/sign/index'
       },
       {
         name: '请假申请',

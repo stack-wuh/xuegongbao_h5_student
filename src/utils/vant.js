@@ -11,6 +11,8 @@ import {
   _toast, setStorageHandle, getStorageHandle
 } from '@/utils/global'
 
+import wx from 'weixin-js-sdk'
+
 import 'vue-event-calendar/dist/style.css'
 import VueEventCalendar from 'vue-event-calendar'
 Vue.use(VueEventCalendar, {locale: 'zh', className: 'disabled highlight'})
@@ -82,3 +84,5 @@ window.rootPath = '/api'
 window.axois = Axios
 
 window.$bus = new Vue()
+
+window.wx = wx

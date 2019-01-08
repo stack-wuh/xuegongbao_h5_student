@@ -11,6 +11,23 @@ import {
 Vue.config.productionTip = false
 window.$router = router
 
+// router.beforeEach((to, from, next) => {
+//   window.axois({
+//     method: 'post',
+//     url: '',
+//   }).then(res => {
+//     let code = {
+//       debug: false,
+//       jsApiList: [
+//         'startSearchBeacons', // 开启查找周边ibeacon设备
+//         'stopSearchBeacons', // 关闭查找周边ibeacon
+//         'onSearchBeacons', // 监听周边ibeacon
+//         'scanQRCode',  // 调用微信扫一扫
+//       ]
+//     }
+//   })
+// })
+
 new Vue({
   router,
   store,
