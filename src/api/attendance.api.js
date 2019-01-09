@@ -31,6 +31,25 @@ export const checkList = ({
 export const signScanQRCode = ({
   data
 }) => $http.post({
-  url: '/signin/qrcodeSignin',
+  url: '/attendance/qrcodeSignin',
+  data
+}).catch(_catch)
+
+
+export const checkTypeList = () => $http.post({
+  url: '/attendance/mySignin'
+}).catch(_catch)
+
+export const photoSignList = ({
+  id
+}) => $http.post({
+  url: '/attendance/photoSigninInfo',
+  data: {id}
+}).catch(_catch)
+
+export const photoSign = ({
+  data
+}) => $http.post({
+  url: '/attendance/photoSignin',
   data
 }).catch(_catch)

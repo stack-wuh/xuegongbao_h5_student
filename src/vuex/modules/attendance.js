@@ -5,6 +5,9 @@ import {
   checkList,
   awardList,
   signScanQRCode,
+  checkTypeList,
+  photoSignList,
+  photoSign,
 } from '@/api/attendance.api.js'
 
 const state = {}
@@ -72,9 +75,45 @@ const actions = {
     const response = await signScanQRCode({data})
     if(!response.error){
       setTimeout(() => {
-        window.$router.push({path: '/'})
+        window.$router.push({path: '/index'})
       }, 1000)
     }
+    return response
+  },
+
+  /**
+   * [GetCheckTypeList 获取首页签到的信息]
+   * @method GetCheckTypeList
+   * @param  {[type]}         context [description]
+   * @return {Promise}                [description]
+   */
+  async GetCheckTypeList(context){
+    const response = await checkTypeList()
+
+    return response
+  },
+
+  /**
+   * [GetPhotoSignList 签到模块 -- 照片签到 -- 获取签到要求和记录]
+   * @method GetPhotoSignList
+   * @param  {[type]}         context [description]
+   * @param  {[type]}         id      [description]
+   * @return {Promise}                [description]
+   */
+  async GetPhotoSignList(context, {id}){
+    const response = await photoSignList({id})
+    return response
+  },
+
+  /**
+   * [PostPhotoSign 照片签到 -- 上传发起的签到的照片]
+   * @method PostPhotoSign
+   * @param  {[type]}      context [description]
+   * @param  {[type]}      form    [description]
+   * @return {Promise}             [description]
+   */
+  async PostPhotoSign(context, {form: data}){
+    const response = await photoSign({data})
     return response
   }
 }

@@ -6,7 +6,7 @@
           照片签到要求:
         </p>
         <p class="margin-tp__10">
-          this is details
+          {{info.command}}
         </p>
       </section>
 
@@ -15,10 +15,12 @@
           <img src="../../../assets/imgs/icon-camera.png" alt="camera">
           上传照片:
         </p>
-        <van-uploader class="my-uploader" >
-          <img src="../../../assets/imgs/icon-photo.png" alt="icon-photo">
+        <van-uploader
+         :after-read="handleSuceess"
+         class="my-uploader" >
+          <img :src="imgUrl || defaultAvatar" alt="icon-photo">
         </van-uploader>
-        <p class="btn-submit">立即上传</p>
+        <p @click="handleSubmit" class="btn-submit">立即上传</p>
       </section>
 
       <section class="box-content">
@@ -26,21 +28,28 @@
           <img src="../../../assets/imgs/icon-camera.png" alt="camera">
           我的照片签到
         </p>
-        <my-list-item v-for="item in 2" :key="item">
-          <img src="../../../assets/imgs/logo.png" alt="logo" slot="left" >
-          <div class="">
-            <p>宿舍考勤</p>
-            <p>2018-09-05</p>
-          </div>
-          <span slot="right" style="margin-right: .3rem;" >签到</span>
+        <my-list-item
+          v-for="(item, index) in info.list"
+          :key="index">
+            <img :src="item.photo || defaultImage" alt="logo" slot="left" >
+            <div class="">
+              <p>宿舍考勤</p>
+              <p>{{item.time}}</p>
+            </div>
+          <span slot="right" style="margin-right: .3rem;" :class="stateColorArr[item.status]" >{{stateArr[item.status]}}</span>
         </my-list-item>
       </section>
   </section>
 </template>
 <script>
 import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
+import {reloadTitleMixin} from '@/utils/mixin'
 import MyListItem from '@/views/layout/listItem'
 import MyList from '@/views/layout/list'
+
+const stateArr = ['审核中', '签到', '请假', '旷到']
+const stateColorArr = ['base', 'signin1', 'signin3', 'signin4']
+
 export default {
   props: {},
   name: '',
@@ -50,14 +59,88 @@ export default {
   },
   computed: {},
   data(){
-    return {}
+    return {
+      stateArr,
+      stateColorArr,
+      info: {},
+
+      imgUrl: '',
+      defaultImage: require('@/assets/imgs/logo.png'),
+      defaultAvatar: require('@/assets/imgs/icon-photo.png'),
+    }
   },
-  methods: {},
-  created(){}
+  methods: {
+    ...mapActions({
+      'GetPhotoSignList': 'GetPhotoSignList',
+      'PostPhotoSign': 'PostPhotoSign'
+    }),
+    /**
+     * [handleSuceess 上传图片]
+     * @method handleSuceess
+     * @param  {[type]}      file [description]
+     * @return {[type]}           [description]
+     */
+    handleSuceess(file){
+      let formData = new FormData()
+      formData.append('file', file.file)
+      window.axois({
+        method: 'post',
+        url: window.rootPath + '/upload/uploadImg',
+        data: formData
+      }).then(res => {
+        window.$toast.clear()
+        this.imgUrl = res.data.msg
+      })
+    },
+
+    /**
+     * [handleSubmit 立即上传签到表单]
+     * @method handleSubmit
+     * @return {[type]}     [description]
+     */
+    handleSubmit(){
+      let form = {
+        id: this.query.id,
+        img: this.imgUrl
+      }
+      this.PostPhotoSign({form}).then(res => {
+        if(!res.error){
+          this.fetchData()
+        }
+      })
+    },
+    fetchData(){
+      this.GetPhotoSignList({id: this.query.id}).then(res => {
+        this.info = res
+      })
+    }
+  },
+  created(){
+    this.fetchData()
+  },
+  mixins: [reloadTitleMixin]
 }
 </script>
 <style lang="less" scoped>
 @import '../../../assets/style/color.less';
+img[alt='icon-photo']{
+  width: 2rem;
+  height: 2rem;
+}
+.base{
+  color: #ffab34;
+}
+.signin1{
+  color: @base-color;
+}
+.signin3{
+  color: #5c76fc;
+}
+.signin4{
+  color: #ff3d3d;
+}
+
+
 .wrapper{
   width: 100vw;
   height: 100vh;

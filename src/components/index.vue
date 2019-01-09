@@ -160,10 +160,90 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['ReLogin']),
+    ...mapActions(['ReLogin', 'GetCheckTypeList', 'PostSignScanQRCode']),
+    /**
+     * [$push 子菜单点击事件]
+     * @method $push
+     * @param  {[type]} path  [description]
+     * @param  {[type]} query [description]
+     * @return {[type]}       [description]
+     */
+    $push({path, query}){
+      if(query.tag === '我要签到'){
+        /**
+         * [GetCheckTypeList 查询签到类型]
+         * 1 蓝牙签到打开蓝牙搜索
+         * 2 二维码签到打开微信扫码
+         * 3 照片签到跳转页面
+         * @type {[type]}
+         */
+        this.GetCheckTypeList().then(res => {
+          if(res == null){
+            _toast({type: 3, msg: '暂时没有签到请求或签到已成功'})
+          }else if( res.type == 1) {
+            this.handleIbeacon()
+          }else if(res.type == 2){
+            this.handleScanQRCode()
+          }else if(res.type == 3){
+            this.$router.push({path: '/index/sign/photo', query: {tag: '照片签到', id: res.id}})
+          }
+        })
+      }else {
+        this.$router.push({path, query})
+      }
+    },
+
+    /**
+     * [handleIbeacon 处理蓝牙签到]
+     * @method handleIbeacon
+     * @return {[type]}      [description]
+     */
+    handleIbeacon(){
+      let _this = this
+      wx.startSearchBeacons({
+        complete: info => {
+          wx.onSearchBeacons({
+            fail: err =>{
+              console.log(err)
+            } ,
+            complete: res => {
+              console.log(res)
+            }
+          })
+        }
+      })
+    },
+
+    /**
+     * [handleScanQRCode 处理二维码签到 ]
+     * @method handleScanQRCode
+     */
+    handleScanQRCode(){
+      let _this = this
+      wx.scanQRCode({
+        needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+        scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+        success: res => {
+          var result = res.resultStr
+          var data = result.split('&')
+          let params = {
+            id: data[0],
+            rand: data[1]
+          }
+          _this.PostSignScanQRCode({form: params})
+        }
+      })
+    }
   },
   created(){
     this.ReLogin()
+  },
+  destroyed(){
+    wx.stopSearchBeacons({
+      complete: err => {
+        _toast({type: 3, msg: '已关闭搜索周边'})
+      }
+    })
   },
   mixins:[reloadTitleMixin, pushRouter]
 }
