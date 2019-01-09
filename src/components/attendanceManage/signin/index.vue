@@ -27,17 +27,31 @@ export default {
     return {}
   },
   methods: {
+    ...mapActions({
+      'PostSignScanQRCode': 'PostSignScanQRCode'
+    }),
     /**
      * [handleScanQRCode 二维码签到]
      * @method handleScanQRCode
      * @return {[type]}         [description]
      */
     handleScanQRCode(){
+      let _this = this
       wx.scanQRCode({
         needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
         scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
         success: function (res) {
-          var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+          let result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+          let data = result.split('&')
+
+          let params = {
+            id: data[0],
+            cate: data[1],
+            rand: data[2]
+          }
+
+          _this.PostSignScanQRCode({form: params})
+
         }
       })
     },

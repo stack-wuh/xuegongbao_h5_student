@@ -27,3 +27,10 @@ export const checkList = ({
   url:'/attendance/studentData',
   data
 }).catch(_catch)
+
+export const signScanQRCode = ({
+  data
+}) => $http.post({
+  url: '/signin/qrcodeSignin',
+  data
+}).catch(_catch)

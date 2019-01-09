@@ -4,6 +4,7 @@ import {
   leaveRemovk,
   checkList,
   awardList,
+  signScanQRCode,
 } from '@/api/attendance.api.js'
 
 const state = {}
@@ -60,7 +61,22 @@ const actions = {
     return response
   },
 
-
+  /**
+   * [PostSignScanQRCode 签到模块 -- 二维码签到]
+   * @method PostSignScanQRCode
+   * @param  {[type]}           context [description]
+   * @param  {[type]}           form    [description]
+   * @return {Promise}                  [description]
+   */
+  async PostSignScanQRCode(context, {form: data}){
+    const response = await signScanQRCode({data})
+    if(!response.error){
+      setTimeout(() => {
+        window.$router.push({path: '/'})
+      }, 1000)
+    }
+    return response
+  }
 }
 
 const getters = {}
