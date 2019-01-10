@@ -179,7 +179,7 @@ export default {
          */
         this.GetCheckTypeList().then(res => {
           if(res == null){
-            _toast({type: 3, msg: '暂时没有签到请求或签到已成功'})
+            this.$toast({type: 3, msg: '暂时没有签到请求或签到已成功'})
           }else if( res.type == 1) {
             this.handleIbeacon()
           }else if(res.type == 2){

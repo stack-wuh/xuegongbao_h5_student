@@ -105,10 +105,17 @@ export default {
       }
       this.PostPhotoSign({form}).then(res => {
         if(!res.error){
-          this.fetchData()
+          setTimeout(() => {
+            this.fetchData()
+          }, 1000)
         }
       })
     },
+    /**
+     * [fetchData 获取签到的要求的和签到列表]
+     * @method fetchData
+     * @return {[type]}  [description]
+     */
     fetchData(){
       this.GetPhotoSignList({id: this.query.id}).then(res => {
         this.info = res
