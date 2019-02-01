@@ -153,6 +153,8 @@ const actions = {
    * @return {Promise}             [description]
    */
   async PostEnlistAdd(context, {form: data}){
+    let category = context.rootState.Common.gameCategoryList.find(kk => kk.name === data.category)
+    data = {...data, category: category.id}
     const response = await enlistAdd({data})
     if(!response.error){
       setTimeout(() => {

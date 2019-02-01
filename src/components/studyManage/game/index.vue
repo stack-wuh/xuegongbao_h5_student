@@ -162,6 +162,7 @@ export default {
     }
   },
   created(){
+    console.log(this.$store)
     this.getCategoryList()
     this.getList({search: this.search, currIndex: this.currTabIndex})
   },
